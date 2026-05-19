@@ -1,0 +1,119 @@
+import type { DMS, Label } from "./common";
+import type { AstroPointType, PlanetConfigType } from "./planet";
+
+export const AspectList = [
+  "conjunction", // 合相 0°
+  "sextile", // 六分相 60°
+  "square", // 四分相 90°
+  "trine", // 三分相 120°
+  "opposition", // 對分相 180°
+
+  "quincunx", // 刑相 150°
+] as const;
+export type AspectName = (typeof AspectList)[number];
+
+export type AspectConfigObjectType =
+  | PlanetConfigType
+  | "asteroid"
+  | AstroPointType
+  | "fixedStar"
+  | "axis"
+  | "house"
+  | "eqHouse"
+  | "zodiac"
+  | "other";
+export type AspectConfigOrb = {
+  [key in AspectConfigObjectType]?: number;
+};
+
+export type SunConditionType = {
+  cazimi: DMS;
+  combustion: DMS;
+  underSunbeams: DMS;
+};
+
+export const SunCondition: SunConditionType = {
+  cazimi: { degree: 0, minute: 17, second: 0 },
+  combustion: { degree: 8, minute: 30, second: 0 },
+  underSunbeams: { degree: 17, minute: 0, second: 0 },
+};
+
+export type AspectConfig = {
+  name: Label;
+  symbol: string;
+  degree: number; // 相位角度，單位為度
+  orb: AspectConfigOrb; // 容許度，單位為度
+  zodiacDiff: number;
+  color: string;
+};
+export type AspectConfigs = Record<AspectName, AspectConfig>;
+
+export const AspectConfigs: AspectConfigs = {
+  conjunction: {
+    name: { zh: "合相", en: "Conjunction" },
+    symbol: "\u260C", // ☌
+    degree: 0,
+    orb: {
+      main: 8,
+      sub: 8,
+
+      asteroid: 1,
+
+      node: 1,
+      apogee: 1,
+      arabicLot: 1,
+      midPoint: 1,
+
+      fixedStar: 1,
+      axis: 1,
+      house: 4,
+      eqHouse: 4,
+      zodiac: 1,
+    },
+    zodiacDiff: 0,
+    color: "#FFD700",
+  },
+  opposition: {
+    name: { zh: "對分相", en: "Opposition" },
+    symbol: "\u260D", // ☍
+    degree: 180,
+    orb: { main: 8, sub: 8 },
+    zodiacDiff: 6,
+    color: "#800080",
+  },
+  trine: {
+    name: { zh: "三分相", en: "Trine" },
+    symbol: "\u25B3", // △
+    degree: 120,
+    orb: { main: 6, sub: 6 },
+    zodiacDiff: 4,
+    color: "#0000FF",
+  },
+  square: {
+    name: { zh: "四分相", en: "Square" },
+    symbol: "\u25A1", // □
+    degree: 90,
+    orb: { main: 6, sub: 6 },
+    zodiacDiff: 3,
+    color: "#FF0000",
+  },
+  sextile: {
+    name: { zh: "六分相", en: "Sextile" },
+    symbol: "\u26B9", // ⚹
+    degree: 60,
+    orb: { main: 6, sub: 6 },
+    zodiacDiff: 2,
+    color: "#00FF00",
+  },
+
+  quincunx: {
+    name: { zh: "梅花相", en: "Quincunx" },
+    symbol: "\u26BB", // ⚻
+    degree: 150,
+    orb: { main: 3, sub: 3 },
+    zodiacDiff: 5,
+    color: "#FFA500",
+  },
+} satisfies Record<AspectName, AspectConfig>;
+
+export const AspectConfigsArray = Object.values(AspectConfigs);
