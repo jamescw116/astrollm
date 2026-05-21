@@ -78,6 +78,7 @@ const fnCalcPlanetVPlanet = (
       aspects.push({
         aspect: aspectName as AspectName,
         degreeDiff: aspectDegreeDiff,
+        orb,
         fromType: PlanetConfigs[planetName1].type,
         fromName: planetName1,
         toType: PlanetConfigs[planetName2].type,

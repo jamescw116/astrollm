@@ -7,13 +7,13 @@ import type { ChartData } from "@/lib/types/chartData";
 import { TestData, TestInput } from "@/lib/types/testData";
 
 import { fnFetchAPI } from "@/lib/fnFetchAPI";
-import { fnToChartData } from "@/lib/calc/fnToChartData";
+import { fnToChartData } from "@/lib/to/chartData/fnToChartData";
 
 import AstroChart from "@/components/AstroChart/AstroChart";
 import AI from "@/components/AI/AI";
 
-const drType: "local" | "api" = "local" as "local" | "api";
-const dspMode: "chart" | "ai" = "ai" as "chart" | "ai";
+const drType: "local" | "api" = "api" as "local" | "api";
+const dspMode: "chart" | "ai" = "chart" as "chart" | "ai";
 
 const Home = () => {
   const [data, setData] = useState<ChartData | undefined>(undefined);

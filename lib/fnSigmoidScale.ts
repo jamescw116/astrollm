@@ -1,4 +1,4 @@
-import { fnToFixDp } from "./common/fnToFixDp";
+import { fnToFixDp } from "./to/fnToFixDp";
 
 // 用來計算非線性能量
 export const fnSigmoidScale = (

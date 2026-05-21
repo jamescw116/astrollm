@@ -3,13 +3,13 @@ import type {
   ChartDataApiResponsePlanets,
   ChartDataPlanet,
   ChartDataPlanets,
-} from "../types/chartData";
-import type { PlanetName } from "../types/planet";
+} from "../../types/chartData";
+import type { PlanetName } from "../../types/planet";
 
-import { PlanetList } from "../types/planet";
+import { PlanetList } from "../../types/planet";
 
-import { fnDegToZodiacDMS } from "../common/fnDegToZodiacDMS";
-import { fnCalcPlanetFortuneType } from "./fnCalcPlanetFortuneType";
+import { fnDegToZodiacDMS } from "../../common/fnDegToZodiacDMS";
+import { fnCalcPlanetFortuneType } from "../../calc/fnCalcPlanetFortuneType";
 
 const fnToChartDataPlanet = (
   planetName: PlanetName,
@@ -22,6 +22,7 @@ const fnToChartDataPlanet = (
     zodiacDMS,
     fortune: fnCalcPlanetFortuneType(planetName, zodiacDMS.zodiac),
     ruleHouse: undefined,
+    atHouse: -1,
     aspects: [],
     powers: [],
     mutualReceptions: [],

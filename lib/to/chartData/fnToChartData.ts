@@ -6,9 +6,9 @@ import type {
   ChartDataFixedStars,
   ChartDataHouse,
   ChartDataPlanets,
-} from "../types/chartData";
+} from "../../types/chartData";
 
-import { fnCalcChartData } from "./fnCalcChartData";
+import { fnCalcChartData } from "../../calc/fnCalcChartData";
 import { fnToChartDataAsteroids } from "./fnToChartDataAsteroids";
 import { fnToChartDataAstroPoints } from "./fnToChartDataAstroPoints";
 import { fnToChartDataFixedStars } from "./fnToChartDataFixedStars";
@@ -16,18 +16,18 @@ import { fnToChartDataHouses } from "./fnToChartDataHouses";
 import { fnToChartDataPlanets } from "./fnToChartDataPlanets";
 
 export const fnToChartData = (apiResp: ChartDataApiResponse): ChartData => {
-  const planets: ChartDataPlanets = fnToChartDataPlanets(apiResp.planets);
+  const planets: ChartDataPlanets = fnToChartDataPlanets(apiResp.p);
 
-  const asteroids: ChartDataAsteroids = fnToChartDataAsteroids(apiResp.planets);
+  const asteroids: ChartDataAsteroids = fnToChartDataAsteroids(apiResp.p);
 
   const astroPoints: ChartDataAstroPoints = fnToChartDataAstroPoints(
-    apiResp.planets,
+    apiResp.p,
   );
 
-  const houses: ChartDataHouse[] = fnToChartDataHouses(apiResp.houses);
+  const houses: ChartDataHouse[] = fnToChartDataHouses(apiResp.h);
 
   const fixedStars: ChartDataFixedStars = fnToChartDataFixedStars(
-    apiResp.fixedStars,
+    apiResp.fs,
   );
 
   const data: ChartData = {

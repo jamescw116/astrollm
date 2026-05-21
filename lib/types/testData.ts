@@ -1,6 +1,7 @@
 import type { ChartDataApiResponse, ChartDataInput } from "./chartData";
 
-export const TestInput: ChartDataInput = {
+export const TestInput: ChartDataInput = 
+{
   y: 1985,
   m: 11,
   d: 6,
@@ -14,9 +15,23 @@ export const TestInput: ChartDataInput = {
   latM: 12,
   hse: "P",
 } satisfies ChartDataInput;
+/*{
+  y: 1985,
+  m: 11,
+  d: 6,
+  h: 17,
+  i: 54,
+  s: 0,
+  tz: 8,
+  lngD: 114,
+  lngM: 6,
+  latD: 22,
+  latM: 12,
+  hse: "P",
+} satisfies ChartDataInput;*/
 
 export const TestData: ChartDataApiResponse = {
-  planets: {
+  p: {
     sun: {
       d: 223.92989,
       m: 1,
@@ -86,11 +101,11 @@ export const TestData: ChartDataApiResponse = {
       m: 1,
     },
   },
-  houses: [
+  h: [
     47.861851, 75.922115, 100.562889, 125.78909, 154.990754, 190.061988,
     227.861851, 255.922115, 280.562889, 305.78909, 334.990754, 10.061988,
   ],
-  fixedStars: {
+  fs: {
     Regulus: 149.627475,
     Aldebaran: 69.593187,
     Antares: 249.556162,

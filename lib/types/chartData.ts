@@ -30,9 +30,9 @@ export type ChartDataApiResponsePlanets = Record<
 >;
 export type ChartDataApiResponseFixedStars = Record<FixedStarName, number>;
 export type ChartDataApiResponse = {
-  planets: ChartDataApiResponsePlanets;
-  houses: number[]; // 0~360°
-  fixedStars: ChartDataApiResponseFixedStars; // 0~360°
+  p: ChartDataApiResponsePlanets;
+  h: number[]; // 0~360°
+  fs: ChartDataApiResponseFixedStars; // 0~360°
 };
 
 export type ChartDataApiResponsePlanet = {
@@ -83,6 +83,7 @@ export type ChartDataPlanet = {
   zodiacDMS: ZodiacDMS;
   fortune: ChartDataPlanetFortuneType;
   ruleHouse: [number] | [number, number] | undefined; // 守護宮位 (單守護或雙守護)
+  atHouse: number;
   aspects: number[]; // 相關相位, AspectData[] 的 index
   mutualReceptions: number[];
   powers: number[]; // 強度索引, ChartDataPower[] 的 index
@@ -95,7 +96,7 @@ export type ChartDataPlanet = {
   };
 };
 
-export type ChartDataPlanetFortuneType = 1 | 0 | -1; // 1 = 順行, 0 = 駐留, -1 = 逆行
+export type ChartDataPlanetFortuneType = 1 | 0 | -1; // 1 = 吉, 0 = 無, -1 = 凶
 
 export type ChartDataPlanetMutualReception = {
   planets: [PlanetName, PlanetName];
@@ -140,6 +141,7 @@ export type ChartDataAspectTo =
 export type ChartDataAspect = {
   aspect: AspectName;
   degreeDiff: number; // 度數差 (0~180)
+  orb: number; // 相位允許的最大度數差
   fromType: AspectConfigObjectType; // ChartDataAspectType;
   fromName: PlanetName | AsteroidName | AstroPointName | FixedStarName;
   toType: AspectConfigObjectType; // ChartDataAspectType;

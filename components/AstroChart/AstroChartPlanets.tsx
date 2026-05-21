@@ -6,7 +6,7 @@ import { ChartConfig } from "@/lib/types/chartSetting";
 import { PlanetConfigs } from "@/lib/types/planet";
 
 import { fnDegToXY } from "@/lib/chart/fnDegToXY";
-import { fnZodiacDMSToString } from "@/lib/common/fnDegToString";
+import { fnZodiacDMSToString } from "@/lib/to/string/fnZodiacDMSToString";
 
 interface AstroChartPlanetProps {
   name: PlanetName;

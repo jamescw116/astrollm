@@ -8,6 +8,7 @@ export const AspectList = [
   "trine", // 三分相 120°
   "opposition", // 對分相 180°
 
+  "semisextile", // 半六分相 30°
   "quincunx", // 刑相 150°
 ] as const;
 export type AspectName = (typeof AspectList)[number];
@@ -38,8 +39,11 @@ export const SunCondition: SunConditionType = {
   underSunbeams: { degree: 17, minute: 0, second: 0 },
 };
 
+
+export type AspectType = "main" | "sub";
 export type AspectConfig = {
   name: Label;
+  type: AspectType;
   symbol: string;
   degree: number; // 相位角度，單位為度
   orb: AspectConfigOrb; // 容許度，單位為度
@@ -51,6 +55,7 @@ export type AspectConfigs = Record<AspectName, AspectConfig>;
 export const AspectConfigs: AspectConfigs = {
   conjunction: {
     name: { zh: "合相", en: "Conjunction" },
+    type: "main",
     symbol: "\u260C", // ☌
     degree: 0,
     orb: {
@@ -75,6 +80,7 @@ export const AspectConfigs: AspectConfigs = {
   },
   opposition: {
     name: { zh: "對分相", en: "Opposition" },
+    type: "main",
     symbol: "\u260D", // ☍
     degree: 180,
     orb: { main: 8, sub: 8 },
@@ -83,6 +89,7 @@ export const AspectConfigs: AspectConfigs = {
   },
   trine: {
     name: { zh: "三分相", en: "Trine" },
+    type: "main",
     symbol: "\u25B3", // △
     degree: 120,
     orb: { main: 6, sub: 6 },
@@ -91,6 +98,7 @@ export const AspectConfigs: AspectConfigs = {
   },
   square: {
     name: { zh: "四分相", en: "Square" },
+    type: "main",
     symbol: "\u25A1", // □
     degree: 90,
     orb: { main: 6, sub: 6 },
@@ -99,6 +107,7 @@ export const AspectConfigs: AspectConfigs = {
   },
   sextile: {
     name: { zh: "六分相", en: "Sextile" },
+    type: "main",
     symbol: "\u26B9", // ⚹
     degree: 60,
     orb: { main: 6, sub: 6 },
@@ -106,8 +115,19 @@ export const AspectConfigs: AspectConfigs = {
     color: "#00FF00",
   },
 
+  semisextile: {
+    name: { zh: "半六分相", en: "Semisextile" },
+    type: "sub",
+    symbol: "\u26BA", // ⚺
+    degree: 30,
+    orb: { main: 3, sub: 3 },
+    zodiacDiff: 1,
+    color: "#00FFFF",
+  },
+
   quincunx: {
     name: { zh: "梅花相", en: "Quincunx" },
+    type: "sub",
     symbol: "\u26BB", // ⚻
     degree: 150,
     orb: { main: 3, sub: 3 },

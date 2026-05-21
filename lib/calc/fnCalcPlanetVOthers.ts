@@ -54,6 +54,7 @@ export const fnCalcPlanetVOther = <
         aspects.push({
           aspect: aspectName as AspectName,
           degreeDiff: aspectDegreeDiff,
+          orb,
           fromType: PlanetConfigs[planetName].type,
           fromName: planetName,
           toType: objType,

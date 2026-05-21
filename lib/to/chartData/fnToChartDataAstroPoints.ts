@@ -3,13 +3,13 @@ import type {
   ChartDataApiResponsePlanets,
   ChartDataAstroPoint,
   ChartDataAstroPoints,
-} from "../types/chartData";
+} from "../../types/chartData";
 
-import type { AstroPointName } from "../types/planet";
+import type { AstroPointName } from "../../types/planet";
 
-import { AstroPointList } from "../types/planet";
+import { AstroPointList } from "../../types/planet";
 
-import { fnDegToZodiacDMS } from "../common/fnDegToZodiacDMS";
+import { fnDegToZodiacDMS } from "../../common/fnDegToZodiacDMS";
 
 const fnToChartDataAstroPoint = (
   apiRespAstroPoint: ChartDataApiResponsePlanet,

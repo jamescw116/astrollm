@@ -1,7 +1,7 @@
-import type { ChartDataHouse } from "../types/chartData";
+import type { ChartDataHouse } from "../../types/chartData";
 
-import { fnDegToZodiacDMS } from "../common/fnDegToZodiacDMS";
-import { ZodiacConfigs } from "../types/zodiac";
+import { fnDegToZodiacDMS } from "../../common/fnDegToZodiacDMS";
+import { ZodiacConfigs } from "../../types/zodiac";
 
 const fnToChartDataHouse = (apiRespHouse: number): ChartDataHouse => {
   const zodiacDMS = fnDegToZodiacDMS(apiRespHouse);

@@ -61,6 +61,7 @@ export const fnCalcObjectVObject = <
         aspects.push({
           aspect: aspectName as AspectName,
           degreeDiff: aspectDegreeDiff,
+          orb,
           fromType: fmOrbType,
           fromName: fromName,
           toType: toOrbType,

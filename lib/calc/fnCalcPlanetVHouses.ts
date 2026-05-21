@@ -65,6 +65,7 @@ const fnCalcPlanetVHouse = (
         aspects.push({
           aspect: aspectName as AspectName,
           degreeDiff: aspectDegreeDiff,
+          orb,
           fromType: PlanetConfigs[planetName].type,
           fromName: planetName,
           toType: realHouseType,
@@ -91,6 +92,10 @@ export const fnCalcPlanetVHouses = (
   aspects: ChartDataAspect[],
 ): void => {
   houses.forEach((house, houseIdx) => {
+    if (houseIdx - planet.atHouse === 1 && planet.degree >= house.degree) {
+      planet.atHouse = houseIdx;
+    }
+
     // 宮界
     fnCalcPlanetVHouse(planet, planetName, house, houseIdx, "house", aspects);
 

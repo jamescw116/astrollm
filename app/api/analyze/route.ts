@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { ChartData } from "@/lib/types/chartData";
+import type { ChartData } from "@/lib/types/chartData";
+
+import { fnChartDataToString } from "@/lib/to/string/fnChartDataToString";
 
 export async function POST(req: NextRequest) {
   // 處理你嘅 Sweph 數據同叫 AI API
@@ -8,6 +10,6 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     message: "Received ChartData successfully",
-    receivedData: data,
+    receivedData: fnChartDataToString(data),
   });
 }

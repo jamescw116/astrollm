@@ -3,12 +3,12 @@ import type {
   ChartDataApiResponsePlanets,
   ChartDataAsteroid,
   ChartDataAsteroids,
-} from "../types/chartData";
-import type { AsteroidName } from "../types/planet";
+} from "../../types/chartData";
+import type { AsteroidName } from "../../types/planet";
 
-import { AsteroidList } from "../types/planet";
+import { AsteroidList } from "../../types/planet";
 
-import { fnDegToZodiacDMS } from "../common/fnDegToZodiacDMS";
+import { fnDegToZodiacDMS } from "../../common/fnDegToZodiacDMS";
 
 const fnToChartDataAsteroid = (
   apiRespAsteroid: ChartDataApiResponsePlanet,

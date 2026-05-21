@@ -2,9 +2,9 @@ import type {
   ChartDataApiResponseFixedStars,
   ChartDataFixedStars,
   ChartDataFixedStar,
-} from "../types/chartData";
+} from "../../types/chartData";
 
-import { fnDegToZodiacDMS } from "../common/fnDegToZodiacDMS";
+import { fnDegToZodiacDMS } from "../../common/fnDegToZodiacDMS";
 
 export const fnToChartDataFixedStars = (
   fixedStars: ChartDataApiResponseFixedStars,
