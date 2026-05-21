@@ -156,3 +156,10 @@ export type ChartDataPower = {
   power: number;
   aspect: number; // ChartDataAspect[] 的 index
 };
+
+export type ChartDataString = {
+  星體: string[];
+  互融: string[];
+  相位: string[];
+  宮位: string[];
+}

@@ -12,8 +12,8 @@ import { fnToChartData } from "@/lib/to/chartData/fnToChartData";
 import AstroChart from "@/components/AstroChart/AstroChart";
 import AI from "@/components/AI/AI";
 
-const drType: "local" | "api" = "api" as "local" | "api";
-const dspMode: "chart" | "ai" = "chart" as "chart" | "ai";
+const drType: "local" | "api" = "local" as "local" | "api";
+const dspMode: "chart" | "ai" = "ai" as "chart" | "ai";
 
 const Home = () => {
   const [data, setData] = useState<ChartData | undefined>(undefined);
@@ -36,6 +36,10 @@ const Home = () => {
     };
 
     fnSetData();
+
+    return () => {
+      setData(undefined);
+    }
   }, []);
 
   return (
@@ -44,7 +48,7 @@ const Home = () => {
         dspMode === "chart" ? (
           <AstroChart data={data} />
         ) : (
-          <AI data={data} />
+          <AI chartData={data} />
         )
       ) : (
         <div

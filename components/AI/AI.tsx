@@ -1,37 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
-
-import { ChartData } from "@/lib/types/chartData";
-import { allExpanded, darkStyles, JsonView } from "react-json-view-lite";
-import 'react-json-view-lite/dist/index.css';
 import React from "react";
 
+import { allExpanded, darkStyles, JsonView } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
+
+import type { ChartData } from "@/lib/types/chartData";
+
+import useRemoteData from "@/lib/hooks/useRemoteData";
+
+import { fnAnalyse } from "@/lib/ai/fnAnalyze";
+
 interface AIProps {
-  data: ChartData;
+  chartData: ChartData;
 }
 
-const AI = ({ data }: AIProps) => {
-  const [json, setJson] = useState<string>("");
+const AI = ({ chartData }: AIProps) => {
+  const { data, loading } = useRemoteData(fnAnalyse, chartData);
 
-  const fetchAIResponse = useCallback(async (d: ChartData) => {
-    fetch("/api/analyze", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(d),
-    })
-      .then((res) => res.json())
-      .then((data) => setJson(data));
-  }, []);
-
-  useEffect(() => {
-    fetchAIResponse(data);
-  }, [fetchAIResponse, data]);
-
-  return (
-    <React.Fragment>
+  return (loading || !data
+    ? <>分析中...</>
+    : <React.Fragment>
       <JsonView
-        data={json}
+        data={data}
         shouldExpandNode={allExpanded}
         clickToExpandNode={true}
         compactTopLevel={true}

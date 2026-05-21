@@ -1,4 +1,4 @@
-import type { ChartData } from "@/lib/types/chartData";
+import type { ChartData, ChartDataString } from "@/lib/types/chartData";
 
 import { AspectConfigs } from "@/lib/types/aspect";
 
@@ -6,9 +6,8 @@ import { fnDegToString } from "./fnDegToString";
 import { fnToCapitalize } from "../fnToCapitalize";
 import { fnHouseToString } from "./fnHouseToString";
 
-export const fnChartDataToString = (chartData: ChartData): string => [
-  "Planets:",
-  ...Object.entries(chartData.planets).map(([name, planet]) =>
+export const fnChartDataToString = (chartData: ChartData): ChartDataString => ({
+  星體: Object.entries(chartData.planets).map(([name, planet]) =>
     [
       fnToCapitalize(name),
       ": ",
@@ -17,9 +16,7 @@ export const fnChartDataToString = (chartData: ChartData): string => [
       fnHouseToString(planet.atHouse, false, false),
     ].join(""),
   ),
-  "",
-  "Mutual Receptions:",
-  ...chartData.mutualReceptions.map((mr) =>
+  互融: chartData.mutualReceptions.map((mr) =>
     [
       fnToCapitalize(mr.planets[0]),
       " & ",
@@ -28,20 +25,7 @@ export const fnChartDataToString = (chartData: ChartData): string => [
       mr.fortune === 1 ? "Good" : mr.fortune === 0 ? "Neutral" : "Bad",
     ].join(""),
   ),
-  "",
-  "Houses:",
-  ...chartData.houses.map((house, index) =>
-    [
-      fnHouseToString(index, false, false),
-      ": ",
-      fnDegToString(house.degree, undefined, "string"),
-      ", ruler: ",
-      fnToCapitalize(house.ruler),
-    ].join(""),
-  ),
-  "",
-  "Aspects:",
-  ...chartData.aspects
+  相位: chartData.aspects
     .filter(
       (aspect) =>
         aspect.active &&
@@ -65,4 +49,13 @@ export const fnChartDataToString = (chartData: ChartData): string => [
         ")",
       ].join(""),
     ),
-].join("\n");
+  宮位: chartData.houses.map((house, index) =>
+    [
+      fnHouseToString(index, false, false),
+      ": ",
+      fnDegToString(house.degree, undefined, "string"),
+      ", ruler: ",
+      fnToCapitalize(house.ruler),
+    ].join(""),
+  ),
+});
