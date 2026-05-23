@@ -3,5 +3,5 @@ import path from "path";
 
 export const fnReadFile = (filename: string): string => {
   const filePath = path.join(process.cwd(), filename);
-  return fs.readFileSync(filePath, "utf-8");
+  return fs.readFileSync(filePath, "utf8");
 };
