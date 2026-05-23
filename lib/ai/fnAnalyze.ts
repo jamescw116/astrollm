@@ -85,5 +85,9 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
       .join("\n\n"),
   );
 
+  if (process.env.AI_CONSOLE_RESULT === "1") {
+    console.log("AI Analysis Result:\n" + results.join("\n\n"));
+  }
+
   return results.join("\n\n");
 };
