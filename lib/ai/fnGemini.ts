@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
 import { fnTypeSystemPrompt } from "./fnTypeSystemPrompt";
 import { fnReadFile } from "../fnReadFile";
@@ -11,11 +11,14 @@ const fnGemini = async (params: {
   showResponse?: boolean;
 }): Promise<string | undefined> => {
   const response = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
+    model: process.env.GEMINI_MODEL || "gemma-4-31b-it",
     contents: params.message,
     config: {
-      systemInstruction: fnReadFile(fnTypeSystemPrompt(params.type))
-    }
+      thinkingConfig: {
+        thinkingLevel: ThinkingLevel.HIGH,
+      },
+      systemInstruction: fnReadFile(fnTypeSystemPrompt(params.type)),
+    },
   });
 
   if (params.showResponse) {
