@@ -16,7 +16,7 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
   let tempResult: string | undefined;
   const timer = new Timer();
 
-  console.log("Key: ${process.env.GEMINI_API_KEY}");
+  console.log(`Key: ${process.env.GEMINI_API_KEY}`);
   timer.start();
   console.log(timer.startString());
   for (const key in cdStr) {
