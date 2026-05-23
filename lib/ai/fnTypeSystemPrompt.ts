@@ -4,7 +4,6 @@ export const fnTypeSystemPrompt = (type: string): string => {
   switch (type) {
     case "星體":
       return path.join(
-        process.cwd(),
         "lib",
         "ai",
         "systemPrompts",
@@ -12,7 +11,6 @@ export const fnTypeSystemPrompt = (type: string): string => {
       );
     case "互融":
       return path.join(
-        process.cwd(),
         "lib",
         "ai",
         "systemPrompts",
@@ -20,7 +18,6 @@ export const fnTypeSystemPrompt = (type: string): string => {
       );
     case "相位":
       return path.join(
-        process.cwd(),
         "lib",
         "ai",
         "systemPrompts",
@@ -28,7 +25,6 @@ export const fnTypeSystemPrompt = (type: string): string => {
       );
     case "宮位":
       return path.join(
-        process.cwd(),
         "lib",
         "ai",
         "systemPrompts",
@@ -36,7 +32,6 @@ export const fnTypeSystemPrompt = (type: string): string => {
       );
     case "總結":
       return path.join(
-        process.cwd(),
         "lib",
         "ai",
         "systemPrompts",
