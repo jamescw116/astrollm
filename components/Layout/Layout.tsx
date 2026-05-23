@@ -6,6 +6,10 @@ import { fnLngLagByIdx } from "@/lib/types/LngLat";
 
 import LayoutInput from "./LayoutInput";
 import AstroChart from "../AstroChart/AstroChart";
+import AI from "../AI/AI";
+
+const LayoutMode = ["星圖", "AI分析"] as const;
+type LayoutMode = (typeof LayoutMode)[number];
 
 const fnDefaultChartDataInput = (date: Date = new Date()): ChartDataInput =>
   ({
@@ -15,13 +19,14 @@ const fnDefaultChartDataInput = (date: Date = new Date()): ChartDataInput =>
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    tz: date.getTimezoneOffset() / -60,
     ...fnLngLagByIdx(0),
   }) as ChartDataInput;
 
 const Layout = () => {
   const [input, setInput] = useState<ChartDataInput>(fnDefaultChartDataInput());
+  const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<ChartData | undefined>(undefined);
+  const [mode, setMode] = useState<LayoutMode>(LayoutMode[0]);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
@@ -31,20 +36,38 @@ const Layout = () => {
         <LayoutInput
           input={input}
           setInput={setInput}
-          data={data}
           setData={setData}
+          setLoading={setLoading}
         />
       </aside>
 
       {/* 右方區域：佔據剩餘空間 */}
       <main className="flex-1 flex flex-col p-6 overflow-hidden">
-        <h2 className="font-bold mb-4">結果區域</h2>
-        <div className="flex flex-col min-h-0 flex-1 border border-gray-600 rounded-lg p-6">
+        <div className="flex flex-row gap-5">
+          {LayoutMode.map((m) => (
+            <h2
+              key={m}
+              className={"font-bold mb-4"}
+              {...(m !== mode
+                ? { onClick: () => setMode(m), style: { cursor: "pointer"} }
+                : { style: { cursor: "default", color: "var(--color-blue-500)" } })}
+            >
+              {m}
+            </h2>
+          ))}
+        </div>
+        <div className="flex flex-col w-full min-h-0 flex-1 justify-center items-center border border-gray-600 rounded-lg p-6">
           {/* 在此放入你的結果元件 */}
           {data ? (
-            <AstroChart data={data} />
+            mode === "星圖" ? (
+              <AstroChart data={data} />
+            ) : (
+              <AI chartData={data} />
+            )
+          ) : loading ? (
+            <div className="flex">載入中...</div>
           ) : (
-            <div className="h-full overflow-y-auto">請提供星盤資料</div>
+            <div className="flex">請提供星盤資料</div>
           )}
         </div>
       </main>

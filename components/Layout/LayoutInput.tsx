@@ -20,11 +20,13 @@ import InputNumber from "./Inputs/Number";
 interface LayoutInputProps {
   input: ChartDataInput;
   setInput: React.Dispatch<React.SetStateAction<ChartDataInput>>;
-  data: ChartData | undefined;
+  //data: ChartData | undefined;
   setData: React.Dispatch<React.SetStateAction<ChartData | undefined>>;
+  //loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LayoutInput = ({ input, setInput, data, setData }: LayoutInputProps) => {
+const LayoutInput = ({ input, setInput, setData, setLoading }: LayoutInputProps) => {
   const [dateStr, setDateStr] = useState<string>(
     fnYMToDateStr(input.y, input.m, input.d)
   );
@@ -66,26 +68,32 @@ const LayoutInput = ({ input, setInput, data, setData }: LayoutInputProps) => {
     });
 
   const fnSubmit = async () => {
+    setData(undefined);
+    setLoading(true);
     const apiResp = await fnFetchAPI(input);
     const chartData: ChartData = fnToChartData(input, apiResp);
     console.log("chartData", chartData);
     setData(chartData);
+    setLoading(false);
   };
 
   return (
     <div className="flex flex-col gap-4">
+      <div>日期</div>
       <Input
         type="date"
         onChange={(e) => setDateStr(e.target.value)}
         value={dateStr}
         onBlur={(e) => setInputDate(e.target.value)}
       />
+      <div className="mt-5">時間</div>
       <Input
         type="time"
         onChange={(e) => setTimeStr(e.target.value)}
         value={timeStr}
         onBlur={(e) => setInputTime(e.target.value)}
       />
+      <div className="mt-5">時區</div>
       <InputNumber
         onChange={(e) => setInputTz(Number(e.target.value))}
         step={0.5}
@@ -93,18 +101,20 @@ const LayoutInput = ({ input, setInput, data, setData }: LayoutInputProps) => {
         max={14}
         value={input.tz}
       />
+      <div className="mt-5">位置</div>
       <Select
         onChange={(e) => setInputLngLag(Number(e.target.value))}
         value={fnLngLagIdx(input.lngD, input.lngM, input.latD, input.latM)}
       >
-        <option value="">請選擇</option>
+        <option value=""> - 請選擇 - </option>
         {LngLatLocations.map((location, idx) => (
           <option key={location} value={idx}>
             {fnLngLagDspByIdx(idx)}
           </option>
         ))}
       </Select>
-      <Button onClick={fnSubmit}>Submit</Button>
+      <div className="mt-5">&nbsp;</div>
+      <Button onClick={fnSubmit}>送出</Button>
     </div>
   );
 };

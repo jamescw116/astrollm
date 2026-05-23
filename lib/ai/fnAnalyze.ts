@@ -8,11 +8,12 @@ import { fnChartDataToString } from "@/lib/to/string/fnChartDataToString";
 import { fnOpenRouter } from "@/lib/ai/fnOpenRouter";
 import { fnInputToString } from "../to/string/fnInputToString";
 import { fnSleep } from "../fnSleep";
+import fnGemini from "./fnGemini";
 
 export const fnAnalyse = async (data: ChartData): Promise<string> => {
   const cdStr = fnChartDataToString(data);
-  const results: string[] = [fnInputToString(data.input)];
-  let tempResult: string = "";
+  const results: string[] = [];
+  let tempResult: string | undefined;
   const timer = new Timer();
 
   timer.start();
@@ -22,7 +23,7 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
     if (cdStr.hasOwnProperty(key)) {
       const cdValue = cdStr[key as keyof typeof cdStr];
 
-      for (const line of cdValue) {
+      /*for (const line of cdValue) {
         tempResult = await fnOpenRouter({
           type: key,
           message: {
@@ -32,6 +33,7 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
         });
 
         timer.tick();
+        console.log(`${key} - ${line}: ${timer.resultString(timer.prevResult())}`);
 
         results.push(line);
         if (tempResult.includes("Error") || tempResult.includes("error")) {
@@ -41,7 +43,22 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
         }
 
         await fnSleep(5000);
+      }*/
+      tempResult = await fnGemini({
+        type: key,
+        message: `請分析${key}資料:\n${cdValue.join("\n")}`,
+      });
+      timer.tick();
+      console.log(`${key}: ${timer.resultString(timer.prevResult())}`);
+
+      //results.push(line);
+      if (!tempResult || tempResult.includes("Error") || tempResult.includes("error")) {
+        return `Error ${tempResult}. Please try again later.`;
+      } else {
+        results.push(tempResult);
       }
+
+      await fnSleep(5000);
     }
   }
 
@@ -60,6 +77,13 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
   } else {
     results.push(tempResult);
   }
+
+  results.unshift(
+    fnInputToString(data.input),
+    Object.entries(cdStr)
+      .map(([key, value]) => `${key}:\n${value.join("\n")}`)
+      .join("\n\n"),
+  );
 
   return results.join("\n\n");
 };
