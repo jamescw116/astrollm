@@ -19,7 +19,7 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
   const [colorModeSys, setColorModeSys] = useState<ColorModeName | undefined>(
     undefined,
   );
-  const [colorMode, setColorMode] = useState<ColorModeName>("dark");
+  const [colorMode, setColorMode] = useState<ColorModeName>("system");
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -130,6 +130,7 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
       svgRef={svgRef}
       colorMode={getColorMode()}
       setColorMode={setColorMode}
+      colorModeDsp={colorMode}
       scale={scale}
       setScale={setScale}
       pan={pan}

@@ -33,16 +33,19 @@ const AstroChartAxisLines = ({
   houses,
   colorMode,
 }: AstroChartAxisLinesProps) => {
-  const [horizonAxis, mcIcAxis] = fnAxises(
+  const [ascAxis, icAxis, dscAxis, mcAxis] = fnAxises(
     houses,
     ChartConfig.centerXY,
+    ChartConfig.radiusAspect,
     ChartConfig.radius + ChartConfig.ticks.spacing + ChartConfig.ticks.axis,
   );
 
   return (
     <>
-      <AstroChartAxisLine line={horizonAxis} colorMode={colorMode} />
-      <AstroChartAxisLine line={mcIcAxis} colorMode={colorMode} />
+      <AstroChartAxisLine line={ascAxis} colorMode={colorMode} />
+      <AstroChartAxisLine line={icAxis} colorMode={colorMode} />
+      <AstroChartAxisLine line={dscAxis} colorMode={colorMode} />
+      <AstroChartAxisLine line={mcAxis} colorMode={colorMode} />
     </>
   );
 };

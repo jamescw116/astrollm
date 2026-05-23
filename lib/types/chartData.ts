@@ -41,6 +41,7 @@ export type ChartDataApiResponsePlanet = {
 };
 
 export type ChartData = {
+  input: ChartDataInput;
   planets: ChartDataPlanets;
   asteroids: ChartDataAsteroids;
   astroPoints: ChartDataAstroPoints;

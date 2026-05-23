@@ -6,9 +6,10 @@ import { fnDegToXY } from "./fnDegToXY";
 export const fnHouses = (
   houses: ChartDataHouse[],
   cXY: XY,
-  len: number,
+  lenStart: number,
+  lenEnd: number,
 ): Line[] =>
   houses.map((house) => ({
-    fm: cXY,
-    to: fnDegToXY(cXY, (house.degree - houses[0].degree + 360) % 360, len),
+    fm: fnDegToXY(cXY, (house.degree - houses[0].degree + 360) % 360, lenStart),
+    to: fnDegToXY(cXY, (house.degree - houses[0].degree + 360) % 360, lenEnd),
   }));

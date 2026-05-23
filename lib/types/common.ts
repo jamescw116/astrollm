@@ -8,7 +8,10 @@ export type Line = {
   to: XY;
 };
 
-export type Label = Record<string, string>;
+export const LangLists = ["zh", "en"] as const;
+export type Lang = (typeof LangLists)[number];
+
+export type Label = Record<Lang, string>;
 
 export const ColorModeList = ["light", "dark", "system"] as const;
 export type ColorModeName = (typeof ColorModeList)[number];

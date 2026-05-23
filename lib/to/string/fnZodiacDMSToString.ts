@@ -1,25 +1,39 @@
 import type { ZodiacDMS } from "@/lib/types/zodiac";
+import type { Lang } from "@/lib/types/common";
 
 import { ZodiacConfigs } from "@/lib/types/zodiac";
 
 import { fnToCapitalize } from "../fnToCapitalize";
+import { fnToLabel } from "./fnToLabel";
+
+export type ZodiacLabelFormat = "string" | "symbol" | "";
+export type ZodiacDMSToStringParams = {
+  zodiacDMS: ZodiacDMS;
+  zodiac?: ZodiacLabelFormat;
+  lang?: Lang;
+};
 
 export const fnZodiacDMSToString = (
-  zodiacDMS: ZodiacDMS,
-  zodiac: "string" | "symbol" | "" = "string",
+  params: ZodiacDMSToStringParams,
 ): string => {
   return [
-    zodiac === "symbol"
-      ? ZodiacConfigs[zodiacDMS.zodiac].symbol
-      : zodiac === "string"
-        ? fnToCapitalize(zodiacDMS.zodiac)
+    params.zodiac === "symbol"
+      ? ZodiacConfigs[params.zodiacDMS.zodiac].symbol
+      : params.zodiac === "string"
+        ? fnToLabel(params.zodiacDMS.zodiac, params.lang ?? "en")
         : "",
     " ",
-    zodiacDMS.dms.degree.toString().padStart(2, "0"),
+    params.zodiacDMS.dms.degree.toString().padStart(2, "0"),
     "°",
     " ",
-    zodiacDMS.dms.minute.toString().padStart(2, "0"),
+    params.zodiacDMS.dms.minute.toString().padStart(2, "0"),
     "'",
-    zodiacDMS.motion === -1 ? " R" : zodiacDMS.motion === 0 ? " S" : "",
-  ].join("").trim();
+    params.zodiacDMS.motion === -1
+      ? " R"
+      : params.zodiacDMS.motion === 0
+        ? " S"
+        : "",
+  ]
+    .join("")
+    .trim();
 };

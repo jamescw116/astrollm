@@ -7,12 +7,14 @@ import AstroChartHouses from "./AstroChartHouses";
 import AstroChartZodiacs from "./AstroChartZodiac";
 import AstroChartPlanets from "./AstroChartPlanets";
 import AstroChartAxisLines from "./AstroChartAxisLine";
+import AstroChartAspects from "./AstroChartAspects";
 
 interface AstroChartCoreProps {
   data: ChartData;
   svgRef: React.RefObject<SVGSVGElement | null>;
   colorMode: ColorModeName;
   setColorMode: React.Dispatch<React.SetStateAction<ColorModeName>>;
+  colorModeDsp: ColorModeName;
   scale: number;
   setScale: React.Dispatch<React.SetStateAction<number>>;
   pan: XY;
@@ -25,6 +27,7 @@ const AstroChartCore = ({
   svgRef,
   colorMode,
   setColorMode,
+  colorModeDsp,
   scale,
   setScale,
   pan,
@@ -33,28 +36,18 @@ const AstroChartCore = ({
 }: AstroChartCoreProps) => {
   return (
     <div
+      className="relative w-full h-full flex items-center justify-center overflow-hidden"
       style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         background:
           ChartConfig.color.bg[colorMode as keyof typeof ChartConfig.color.bg],
-        overflow: "hidden",
       }}
     >
       <svg
+        className="w-full h-full touch-none"
         ref={svgRef}
-        width="100%"
-        height="100%"
-        viewBox={`0 0 ${ChartConfig.size} ${ChartConfig.size}`}
+        viewBox={`0 0 ${ChartConfig.size} ${ChartConfig.size}`} // 0 0 400 400
         style={{
-          maxWidth: "100vw",
-          maxHeight: "100vh",
-          display: "block",
           cursor: isDragging ? "grabbing" : "grab",
-          touchAction: "none",
         }}
         preserveAspectRatio="xMidYMid meet"
       >
@@ -62,6 +55,13 @@ const AstroChartCore = ({
           <g
             transform={`translate(${(1 - scale) * ChartConfig.centerXY.x} ${(1 - scale) * ChartConfig.centerXY.y}) scale(${scale})`}
           >
+            {/* 相位線 */}
+            <AstroChartAspects
+              aspects={data.aspects}
+              planets={data.planets}
+              ascDeg={data.houses[0].degree}
+              colorMode={colorMode}
+            />
             {/* 12宮線 */}
             <AstroChartHouses houses={data.houses} colorMode={colorMode} />
             {/* 星座 */}
@@ -73,19 +73,6 @@ const AstroChartCore = ({
             />
             {/* 地平線與天底天頂線 */}
             <AstroChartAxisLines houses={data.houses} colorMode={colorMode} />
-            {/* 星盤圓 */}
-            <circle
-              cx={ChartConfig.centerXY.x}
-              cy={ChartConfig.centerXY.y}
-              r={ChartConfig.radius}
-              fill="none"
-              stroke={
-                ChartConfig.color.line.main[
-                  colorMode as keyof typeof ChartConfig.color.line.main
-                ]
-              }
-              strokeWidth={1.5}
-            />
           </g>
         </g>
       </svg>
@@ -107,7 +94,7 @@ const AstroChartCore = ({
           )
         }
       >
-        Mode: {colorMode}
+        Mode: {colorModeDsp}
       </button>
       {/* 可選：顯示縮放比例 */}
       <div

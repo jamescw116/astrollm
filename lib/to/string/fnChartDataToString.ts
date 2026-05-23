@@ -1,28 +1,41 @@
 import type { ChartData, ChartDataString } from "@/lib/types/chartData";
 
+import type { PlanetName } from "@/lib/types/planet";
+import type { ZodiacName } from "@/lib/types/zodiac";
+import type { AspectName } from "@/lib/types/aspect";
+import type { Lang } from "@/lib/types/common";
+
 import { AspectConfigs } from "@/lib/types/aspect";
 
 import { fnDegToString } from "./fnDegToString";
-import { fnToCapitalize } from "../fnToCapitalize";
 import { fnHouseToString } from "./fnHouseToString";
+import { fnToLabel } from "./fnToLabel";
 
-export const fnChartDataToString = (chartData: ChartData): ChartDataString => ({
+export const fnChartDataToString = (
+  chartData: ChartData,
+  lang: Lang = "zh",
+): ChartDataString => ({
   星體: Object.entries(chartData.planets).map(([name, planet]) =>
     [
-      fnToCapitalize(name),
+      fnToLabel(name as PlanetName, lang),
       ": ",
-      fnDegToString(planet.degree, planet.zodiacDMS.motion, "string"),
+      fnDegToString({
+        deg: planet.degree,
+        motion: planet.zodiacDMS.motion,
+        zodiac: "string",
+        lang,
+      }),
       " @ ",
-      fnHouseToString(planet.atHouse, false, false),
+      fnHouseToString({ idx: planet.atHouse, eqHouse: false, lang }),
     ].join(""),
   ),
   互融: chartData.mutualReceptions.map((mr) =>
     [
-      fnToCapitalize(mr.planets[0]),
-      " & ",
-      fnToCapitalize(mr.planets[1]),
-      " = ",
-      mr.fortune === 1 ? "Good" : mr.fortune === 0 ? "Neutral" : "Bad",
+      fnToLabel(mr.planets[0], lang),
+      " 與 ",
+      fnToLabel(mr.planets[1], lang),
+      " 互融成 ",
+      mr.fortune === 1 ? "吉" : mr.fortune === 0 ? "平" : "凶",
     ].join(""),
   ),
   相位: chartData.aspects
@@ -35,27 +48,30 @@ export const fnChartDataToString = (chartData: ChartData): ChartDataString => ({
     )
     .map((aspect) =>
       [
-        fnToCapitalize(aspect.fromName),
+        fnToLabel(aspect.fromName as PlanetName, lang),
         " ",
-        aspect.aspect,
+        fnToLabel(aspect.aspect as AspectName, lang),
         " ",
         typeof aspect.toName === "string"
-          ? fnToCapitalize(aspect.toName)
-          : fnHouseToString(aspect.toName, aspect.toType === "eqHouse"),
-        " (",
-        fnDegToString(aspect.degreeDiff, undefined, ""),
-        ", orb: ",
+          ? fnToLabel(
+              aspect.toName as PlanetName | ZodiacName | AspectName,
+              lang,
+            )
+          : fnHouseToString({ idx: aspect.toName, eqHouse: aspect.toType === "eqHouse", lang }),
+        " (差距: ",
+        fnDegToString({ deg: aspect.degreeDiff, zodiac: "" }),
+        ", 容許度: ",
         `${aspect.orb}°`,
         ")",
       ].join(""),
     ),
   宮位: chartData.houses.map((house, index) =>
     [
-      fnHouseToString(index, false, false),
+      fnHouseToString({ idx: index, eqHouse: false, lang }),
       ": ",
-      fnDegToString(house.degree, undefined, "string"),
-      ", ruler: ",
-      fnToCapitalize(house.ruler),
+      fnDegToString({ deg: house.degree, zodiac: "string", lang }),
+      ", 宮主星: ",
+      fnToLabel(house.ruler, lang),
     ].join(""),
   ),
 });

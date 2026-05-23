@@ -5,6 +5,7 @@ import type {
   ChartDataAstroPoints,
   ChartDataFixedStars,
   ChartDataHouse,
+  ChartDataInput,
   ChartDataPlanets,
 } from "../../types/chartData";
 
@@ -15,7 +16,7 @@ import { fnToChartDataFixedStars } from "./fnToChartDataFixedStars";
 import { fnToChartDataHouses } from "./fnToChartDataHouses";
 import { fnToChartDataPlanets } from "./fnToChartDataPlanets";
 
-export const fnToChartData = (apiResp: ChartDataApiResponse): ChartData => {
+export const fnToChartData = (input: ChartDataInput, apiResp: ChartDataApiResponse): ChartData => {
   const planets: ChartDataPlanets = fnToChartDataPlanets(apiResp.p);
 
   const asteroids: ChartDataAsteroids = fnToChartDataAsteroids(apiResp.p);
@@ -31,6 +32,7 @@ export const fnToChartData = (apiResp: ChartDataApiResponse): ChartData => {
   );
 
   const data: ChartData = {
+    input,
     planets,
     asteroids,
     astroPoints,

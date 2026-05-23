@@ -39,10 +39,9 @@ export const SunCondition: SunConditionType = {
   underSunbeams: { degree: 17, minute: 0, second: 0 },
 };
 
-
 export type AspectType = "main" | "sub";
 export type AspectConfig = {
-  name: Label;
+  label: Label;
   type: AspectType;
   symbol: string;
   degree: number; // 相位角度，單位為度
@@ -54,7 +53,7 @@ export type AspectConfigs = Record<AspectName, AspectConfig>;
 
 export const AspectConfigs: AspectConfigs = {
   conjunction: {
-    name: { zh: "合相", en: "Conjunction" },
+    label: { zh: "合相", en: "Conjunction" },
     type: "main",
     symbol: "\u260C", // ☌
     degree: 0,
@@ -79,34 +78,34 @@ export const AspectConfigs: AspectConfigs = {
     color: "#FFD700",
   },
   opposition: {
-    name: { zh: "對分相", en: "Opposition" },
+    label: { zh: "對分相", en: "Opposition" },
     type: "main",
     symbol: "\u260D", // ☍
     degree: 180,
     orb: { main: 8, sub: 8 },
     zodiacDiff: 6,
-    color: "#800080",
+    color: "#4A90E2",
   },
   trine: {
-    name: { zh: "三分相", en: "Trine" },
+    label: { zh: "三分相", en: "Trine" },
     type: "main",
     symbol: "\u25B3", // △
     degree: 120,
     orb: { main: 6, sub: 6 },
     zodiacDiff: 4,
-    color: "#0000FF",
+    color: "#50E3C2",
   },
   square: {
-    name: { zh: "四分相", en: "Square" },
+    label: { zh: "四分相", en: "Square" },
     type: "main",
     symbol: "\u25A1", // □
     degree: 90,
     orb: { main: 6, sub: 6 },
     zodiacDiff: 3,
-    color: "#FF0000",
+    color: "#E94E77",
   },
   sextile: {
-    name: { zh: "六分相", en: "Sextile" },
+    label: { zh: "六分相", en: "Sextile" },
     type: "main",
     symbol: "\u26B9", // ⚹
     degree: 60,
@@ -116,7 +115,7 @@ export const AspectConfigs: AspectConfigs = {
   },
 
   semisextile: {
-    name: { zh: "半六分相", en: "Semisextile" },
+    label: { zh: "半六分相", en: "Semisextile" },
     type: "sub",
     symbol: "\u26BA", // ⚺
     degree: 30,
@@ -126,7 +125,7 @@ export const AspectConfigs: AspectConfigs = {
   },
 
   quincunx: {
-    name: { zh: "梅花相", en: "Quincunx" },
+    label: { zh: "梅花相", en: "Quincunx" },
     type: "sub",
     symbol: "\u26BB", // ⚻
     degree: 150,

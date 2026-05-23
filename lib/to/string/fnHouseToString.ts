@@ -1,33 +1,16 @@
-const fnHouseToStringCore = (idx: number, eqHouse?: boolean): string =>
-  `${eqHouse ? "Equal " : ""}House ${(idx + 1).toString().padStart(2, "0")}`;
+import type { Lang } from "@/lib/types/common";
 
-export const fnHouseToString = (
-  idx: number,
-  eqHouse: boolean = false,
-  showAxis: boolean = true,
-): string => {
-  let name: string;
+import { HouseAxisNames, HouseNames } from "@/lib/types/houseSystem";
 
-  if (showAxis) {
-    switch (idx) {
-      case 0:
-        name = "ASC";
-        break;
-      case 3:
-        name = "IC";
-        break;
-      case 6:
-        name = "DSC";
-        break;
-      case 9:
-        name = "MC";
-        break;
-      default:
-        name = fnHouseToStringCore(idx, eqHouse);
-    }
-  } else {
-    name = fnHouseToStringCore(idx, eqHouse);
-  }
-
-  return name;
+export type HouseToStringParams = {
+  idx: number;
+  eqHouse?: boolean;
+  showAxis?: boolean;
+  lang?: Lang;
 };
+
+export const fnHouseToString = (params: HouseToStringParams): string =>
+  (params.showAxis
+    ? HouseAxisNames[params.idx][params.lang ?? "en"]
+    : HouseNames[params.idx][params.lang ?? "en"]) +
+  (params.eqHouse ? " (等宮)" : "");

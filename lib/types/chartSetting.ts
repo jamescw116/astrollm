@@ -19,6 +19,7 @@ const ChartTicks = {
 const ChartSize: number = 400;
 const ChartRadius: number =
   ChartSize / 2 - (ChartTicks.axis + ChartTicks.spacing * 2);
+const ChartRadiusAspect: number = ChartRadius * 0.65;
 const ChartCenterXY: XY = {
   x: ChartSize / 2,
   y: ChartSize / 2,
@@ -55,6 +56,7 @@ export const ChartConfig = {
   ticks: ChartTicks,
   size: ChartSize,
   radius: ChartRadius,
+  radiusAspect: ChartRadiusAspect,
   centerXY: ChartCenterXY,
   fontSize: ChartFontSize,
   color: ChartColor,

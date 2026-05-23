@@ -32,11 +32,41 @@ interface AstroChartHousesProps {
   colorMode: ColorModeName;
 }
 
-const AstroChartHouses = ({ houses, colorMode }: AstroChartHousesProps) =>
-  fnHouses(houses, ChartConfig.centerXY, ChartConfig.radius).map(
-    (line, idx) => (
+const AstroChartHouses = ({ houses, colorMode }: AstroChartHousesProps) => (
+  <>
+    {fnHouses(
+      houses,
+      ChartConfig.centerXY,
+      ChartConfig.radiusAspect,
+      ChartConfig.radius,
+    ).map((line, idx) => (
       <AstroChartHouse key={idx} idx={idx} line={line} colorMode={colorMode} />
-    ),
-  );
+    ))}
+    <circle
+      cx={ChartConfig.centerXY.x}
+      cy={ChartConfig.centerXY.y}
+      r={ChartConfig.radiusAspect}
+      fill="none"
+      stroke={
+        ChartConfig.color.line.main[
+          colorMode as keyof typeof ChartConfig.color.line.main
+        ]
+      }
+      strokeWidth={1.5}
+    />
+    <circle
+      cx={ChartConfig.centerXY.x}
+      cy={ChartConfig.centerXY.y}
+      r={ChartConfig.radius}
+      fill="none"
+      stroke={
+        ChartConfig.color.line.main[
+          colorMode as keyof typeof ChartConfig.color.line.main
+        ]
+      }
+      strokeWidth={1.5}
+    />
+  </>
+);
 
 export default AstroChartHouses;

@@ -1,4 +1,4 @@
 import { fnToFixDp } from "../to/fnToFixDp";
 
 export const fnCalcGap = (num1: number, num2: number): number =>
-  num1 > num2 ? num1 - num2 : fnToFixDp(num2 - num1);
+  fnToFixDp(180 - Math.abs(Math.abs(num1 - num2) - 180));

@@ -2,25 +2,64 @@
 
 import type { ChartData } from "@/lib/types/chartData";
 
+import { Timer } from "../common/Timer";
+
 import { fnChartDataToString } from "@/lib/to/string/fnChartDataToString";
-import { fnAIResponse } from "@/lib/ai/fnAIResponse";
+import { fnOpenRouter } from "@/lib/ai/fnOpenRouter";
+import { fnInputToString } from "../to/string/fnInputToString";
+import { fnSleep } from "../fnSleep";
 
-export const fnAnalyse = async (data: ChartData): Promise<object> => {
-  // 處理你嘅 Sweph 數據同叫 AI API
+export const fnAnalyse = async (data: ChartData): Promise<string> => {
   const cdStr = fnChartDataToString(data);
-  let response: object = {};
+  const results: string[] = [fnInputToString(data.input)];
+  let tempResult: string = "";
+  const timer = new Timer();
 
+  timer.start();
+  console.log(timer.startString());
   for (const key in cdStr) {
+    results.push(key);
     if (cdStr.hasOwnProperty(key)) {
       const cdValue = cdStr[key as keyof typeof cdStr];
-      const aiResponse = await fnAIResponse(
-        key,
-        cdValue.join("\n"),
-        Object.values(response).join("\n"),
-      );
-      response = { ...response, [key]: aiResponse };
+
+      for (const line of cdValue) {
+        tempResult = await fnOpenRouter({
+          type: key,
+          message: {
+            role: "user",
+            content: `請分析${key}資料:\n${line}`,
+          },
+        });
+
+        timer.tick();
+
+        results.push(line);
+        if (tempResult.includes("Error") || tempResult.includes("error")) {
+          return `Error ${tempResult}. Please try again later.`;
+        } else {
+          results.push(tempResult);
+        }
+
+        await fnSleep(5000);
+      }
     }
   }
 
-  return response;
+  tempResult = await fnOpenRouter({
+    type: "總結",
+    message: {
+      role: "user",
+      content: "請分析:" + results.join("\n\n"),
+    },
+  });
+
+  timer.stop();
+  console.log(timer.resultsString(timer.results()));
+  if (tempResult.includes("Error") || tempResult.includes("error")) {
+    return `Error ${tempResult}. Please try again later.`;
+  } else {
+    results.push(tempResult);
+  }
+
+  return results.join("\n\n");
 };
