@@ -16,6 +16,7 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
   let tempResult: string | undefined;
   const timer = new Timer();
 
+  console.log("Key: ${process.env.GEMINI_API_KEY}");
   timer.start();
   console.log(timer.startString());
   for (const key in cdStr) {
@@ -47,6 +48,7 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
       tempResult = await fnGemini({
         type: key,
         message: `請分析${key}資料:\n${cdValue.join("\n")}`,
+        showResponse: process.env.AI_CONSOLE_RESULT === "1",
       });
       timer.tick();
       console.log(`${key}: ${timer.resultString(timer.prevResult())}`);
@@ -68,6 +70,7 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
       role: "user",
       content: "請分析:" + results.join("\n\n"),
     },
+    showResponse: process.env.AI_CONSOLE_RESULT === "1",
   });
 
   timer.stop();
@@ -84,10 +87,6 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
       .map(([key, value]) => `${key}:\n${value.join("\n")}`)
       .join("\n\n"),
   );
-
-  if (process.env.AI_CONSOLE_RESULT === "1") {
-    console.log("AI Analysis Result:\n" + results.join("\n\n"));
-  }
 
   return results.join("\n\n");
 };
