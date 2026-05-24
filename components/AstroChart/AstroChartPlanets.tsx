@@ -32,9 +32,6 @@ const AstroChartPlanet = ({
   const fixDeg = (planetDeg - ascDeg + 360) % 360;
   const pXY = fnDegToXY(cXY, fixDeg, len - ChartConfig.ticks.planet);
 
-  if (planet.degree !== planetDeg)
-    console.log(planetName, planet.degree, planetDeg);
-
   return (
     <>
       <text

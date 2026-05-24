@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { ChartData } from "@/lib/types/chartData";
 
-import { fnAnalyse } from "@/lib/ai/fnAnalyze";
+import { fnAnalyse } from "@/lib/llm/fnAnalyze";
 import Button from "../Layout/Inputs/Button";
 
 interface AIProps {
@@ -15,6 +15,7 @@ const AI = ({ chartData }: AIProps) => {
 
   const fnSubmit = async () => {
     setLoading(true);
+    setAiResp(undefined);
     const resp = await fnAnalyse(chartData);
     setAiResp(resp);
     setLoading(false);
@@ -33,9 +34,12 @@ const AI = ({ chartData }: AIProps) => {
       )}
     </div>
   ) : (
-    <div className="overflow-y-auto">{aiResp.split("\n").map((line, index) => (
-      <div key={index}>{line}</div>
-    ))}</div>
+    <div className="overflow-y-auto">
+      {aiResp.split("\n").map((line, index) => (
+        <div key={index}>{line}</div>
+      ))}
+      <Button onClick={() => fnSubmit()}>重新分析</Button>
+    </div>
   );
 };
 

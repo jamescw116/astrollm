@@ -91,8 +91,10 @@ export const fnCalcPlanetVHouses = (
   houses: ChartDataHouse[],
   aspects: ChartDataAspect[],
 ): void => {
+  const planetDeg = (planet.degree - houses[0].degree + 360) % 360;
+
   houses.forEach((house, houseIdx) => {
-    if (houseIdx - planet.atHouse === 1 && planet.degree >= house.degree) {
+    if (planetDeg >= (house.degree - houses[0].degree + 360) % 360) {
       planet.atHouse = houseIdx;
     }
 

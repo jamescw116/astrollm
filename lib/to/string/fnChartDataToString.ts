@@ -10,6 +10,7 @@ import { AspectConfigs } from "@/lib/types/aspect";
 import { fnDegToString } from "./fnDegToString";
 import { fnHouseToString } from "./fnHouseToString";
 import { fnToLabel } from "./fnToLabel";
+import { fnRuleHouseToString } from "./fnRuleHouseToString";
 
 export const fnChartDataToString = (
   chartData: ChartData,
@@ -18,15 +19,16 @@ export const fnChartDataToString = (
   星體: Object.entries(chartData.planets).map(([name, planet]) =>
     [
       fnToLabel(name as PlanetName, lang),
-      ": ",
+      ` ${fnRuleHouseToString(planet.ruleHouse, lang)}`,
+      " 落入 ",
       fnDegToString({
         deg: planet.degree,
         motion: planet.zodiacDMS.motion,
         zodiac: "string",
         lang,
       }),
-      " @ ",
-      fnHouseToString({ idx: planet.atHouse, eqHouse: false, lang }),
+      ", 落入 ",
+      fnHouseToString({ idx: planet.atHouse, lang }),
     ].join(""),
   ),
   互融: chartData.mutualReceptions.map((mr) =>

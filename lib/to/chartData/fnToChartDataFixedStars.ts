@@ -14,6 +14,7 @@ export const fnToChartDataFixedStars = (
       [fixedStarName]: {
         degree,
         zodiacDMS: fnDegToZodiacDMS(degree),
+        aspects: [],
       } as ChartDataFixedStar,
     }))
     .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as ChartDataFixedStars;
