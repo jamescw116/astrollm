@@ -14,7 +14,7 @@ const BasicInfo = ({ chartData }: BasicInfoProps) => {
           {key}:
         </div>,
         ...value.map((v) => <div key={v}>{v}</div>),
-        <div key={`${key}-spacer`}>&nbsp;</div>
+        <div key={`${key}-spacer`}>&nbsp;</div>,
       ])}
     </div>
   );

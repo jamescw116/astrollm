@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 
-import type { ColorModeName } from "@/lib/types/common";
 import type { ChartData } from "@/lib/types/chartData";
 
 import { ChartConfig } from "@/lib/types/chartSetting";
@@ -16,10 +15,6 @@ interface AstroChartProps {
 }
 
 const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
-  const [colorModeSys, setColorModeSys] = useState<ColorModeName | undefined>(
-    undefined,
-  );
-  const [colorMode, setColorMode] = useState<ColorModeName>("system");
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -84,26 +79,6 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     dragStartRef.current = null;
   }, []);
 
-  const getColorMode = (): ColorModeName => {
-    if (colorMode === "system") {
-      return colorModeSys || "light";
-    }
-    return colorMode;
-  };
-
-  useEffect(() => {
-    const fnSetColorModeSys = async () => {
-      setColorModeSys(
-        window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light",
-      );
-    };
-
-    fnSetColorModeSys();
-  }, []);
-
   useEffect(() => {
     const svg = svgRef.current;
 
@@ -128,9 +103,6 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     <AstroChartCore
       data={data}
       svgRef={svgRef}
-      colorMode={getColorMode()}
-      setColorMode={setColorMode}
-      colorModeDsp={colorMode}
       scale={scale}
       setScale={setScale}
       pan={pan}

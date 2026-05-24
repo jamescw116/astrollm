@@ -1,7 +1,9 @@
 import type { ChartData } from "@/lib/types/chartData";
-import type { ColorModeName, XY } from "@/lib/types/common";
+import type { XY } from "@/lib/types/common";
 
 import { ChartConfig } from "@/lib/types/chartSetting";
+
+import { useTheme } from "@/lib/ThemeProvider";
 
 import AstroChartHouses from "./AstroChartHouses";
 import AstroChartZodiacs from "./AstroChartZodiac";
@@ -12,9 +14,6 @@ import AstroChartAspects from "./AstroChartAspects";
 interface AstroChartCoreProps {
   data: ChartData;
   svgRef: React.RefObject<SVGSVGElement | null>;
-  colorMode: ColorModeName;
-  setColorMode: React.Dispatch<React.SetStateAction<ColorModeName>>;
-  colorModeDsp: ColorModeName;
   scale: number;
   setScale: React.Dispatch<React.SetStateAction<number>>;
   pan: XY;
@@ -25,22 +24,20 @@ interface AstroChartCoreProps {
 const AstroChartCore = ({
   data,
   svgRef,
-  colorMode,
-  setColorMode,
-  colorModeDsp,
   scale,
   setScale,
   pan,
   setPan,
   isDragging,
 }: AstroChartCoreProps) => {
+  const { realTheme } = useTheme();
+
   return (
     <div
-      className="relative w-full h-full flex items-center justify-center overflow-hidden"
-      style={{
-        background:
-          ChartConfig.color.bg[colorMode as keyof typeof ChartConfig.color.bg],
-      }}
+      className={`
+        ${realTheme === "dark" ? "scheme-dark" : "scheme-light"}
+        relative w-full h-full flex items-center justify-center overflow-hidden
+        `}
     >
       <svg
         className="w-full h-full touch-none"
@@ -56,11 +53,11 @@ const AstroChartCore = ({
             transform={`translate(${(1 - scale) * ChartConfig.centerXY.x} ${(1 - scale) * ChartConfig.centerXY.y}) scale(${scale})`}
           >
             {/* 12宮線 */}
-            <AstroChartHouses houses={data.houses} colorMode={colorMode} />
+            <AstroChartHouses houses={data.houses} />
             {/* 地平線與天底天頂線 */}
-            <AstroChartAxisLines houses={data.houses} colorMode={colorMode} />
+            <AstroChartAxisLines houses={data.houses} />
             {/* 星座 */}
-            <AstroChartZodiacs houses={data.houses} colorMode={colorMode} />
+            <AstroChartZodiacs houses={data.houses} />
             {/* 行星 */}
             <AstroChartPlanets
               planets={data.planets}
@@ -75,38 +72,13 @@ const AstroChartCore = ({
           </g>
         </g>
       </svg>
-      {/* 黑白模式 */}
-      <button
-        style={{
-          position: "absolute",
-          right: 20,
-          top: 20,
-          borderRadius: 8,
-          padding: "2px 10px",
-          fontSize: 14,
-          color: colorMode === "light" ? "#333" : "#fff",
-          cursor: "pointer",
-        }}
-        onClick={() =>
-          setColorMode((prev) =>
-            prev === "light" ? "dark" : prev === "dark" ? "system" : "light",
-          )
-        }
-      >
-        Mode: {colorModeDsp}
-      </button>
       {/* 可選：顯示縮放比例 */}
       <div
-        style={{
-          position: "absolute",
-          right: 20,
-          bottom: 20,
-          borderRadius: 8,
-          padding: "2px 10px",
-          fontSize: 14,
-          color: colorMode === "light" ? "#333" : "#fff",
-          cursor: "pointer",
-        }}
+        className={`
+          ${realTheme === "dark" ? "scheme-dark" : "scheme-light"}
+          bg-(--background) text-(--foreground) 
+          absolute right-5 bottom-5 px-2.5 py-0.5 text-[14px] rounded cursor-pointer
+          `}
         onMouseDown={() => {
           setScale(1);
           setPan({ x: 0, y: 0 });

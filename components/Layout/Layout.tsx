@@ -4,7 +4,7 @@ import type { ChartData, ChartDataInput } from "@/lib/types/chartData";
 
 import { fnLngLagByIdx } from "@/lib/types/LngLat";
 
-import LayoutInput from "./LayoutInput";
+import Input from "../Input/Input";
 import AstroChart from "../AstroChart/AstroChart";
 import AI from "../AI/AI";
 import BasicInfo from "../BasicInfo/BasicInfo";
@@ -30,11 +30,16 @@ const Layout = () => {
   const [mode, setMode] = useState<LayoutMode>(LayoutMode[0]);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div
+      className={`
+      flex flex-col h-screen w-screen overflow-hidden
+      md:flex-row
+      `}
+    >
       {/* 左方區域：設定為 resize 水平方向，預設 20% */}
-      <aside className="w-1/5 min-w-37.5 max-w-[50%] resize-x overflow-hidden border-r border-gray-300 p-4">
+      <aside className="w-1/5 min-w-37.5 max-w-[50%] resize-x overflow-hidden border-r md:border-b-0 md:border-r border-gray-300 p-4">
         {/* 在此放入你的輸入元件 */}
-        <LayoutInput
+        <Input
           input={input}
           setInput={setInput}
           setData={setData}
@@ -50,28 +55,30 @@ const Layout = () => {
               key={m}
               className={"font-bold mb-4"}
               {...(m !== mode
-                ? { onClick: () => setMode(m), style: { cursor: "pointer"} }
-                : { style: { cursor: "default", color: "var(--color-blue-500)" } })}
+                ? { onClick: () => setMode(m), style: { cursor: "pointer" } }
+                : {
+                    style: {
+                      cursor: "default",
+                      color: "var(--color-blue-500)",
+                    },
+                  })}
             >
               {m}
             </h2>
           ))}
         </div>
+        <div className="flex md:hidden gap-2 mb-4">
+          <button onClick={() => setMode("星圖")}>星盤</button>
+          <button onClick={() => setMode("基本資訊")}>資訊</button>
+          <button onClick={() => setMode("AI分析")}>AI</button>
+        </div>
         <div className="flex flex-col w-full min-h-0 flex-1 justify-center items-center border border-gray-600 rounded-lg p-6">
           {/* 在此放入你的結果元件 */}
-          {data ? (
-            mode === "星圖" ? (
-              <AstroChart data={data} />
-            ) : mode === "基本資訊" ? (
-              <BasicInfo chartData={data} />
-            ) : (
-              <AI chartData={data} />
-            )
-          ) : loading ? (
-            <div className="flex">載入中...</div>
-          ) : (
-            <div className="flex">請提供星盤資料</div>
-          )}
+          {data && mode === "星圖" && <AstroChart data={data} />}
+          {data && mode === "基本資訊" && <BasicInfo chartData={data} />}
+          {data && mode === "AI分析" && <AI chartData={data} />}
+          {!data && loading && <div className="flex">載入中...</div>}
+          {!data && !loading && <div className="flex">請提供星盤資料</div>}
         </div>
       </main>
     </div>

@@ -37,23 +37,9 @@ const ChartColorName = {
   yellow: "#FBC02D", // #FFFF00
   cyan: "#039BE5", // #00FFFF
   magenta: "#D81B60", // #FF00FF
-}
+};
 
 const ChartColor = {
-  line: {
-    main: {
-      light: "#222",
-      dark: "#999",
-    },
-    sub: {
-      light: "#666",
-      dark: "#666",
-    },
-  },
-  bg: {
-    light: "#fff",
-    dark: "#111",
-  },
   element: {
     water: ChartColorName.blue, // Blue
     fire: ChartColorName.red, // Red
@@ -74,5 +60,5 @@ export const ChartConfig = {
   scale: {
     min: 0.5,
     max: 4,
-  }
+  },
 };

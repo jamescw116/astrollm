@@ -11,33 +11,39 @@ import {
 import { fnFetchAPI } from "@/lib/fnFetchAPI";
 import { fnToChartData } from "@/lib/to/chartData/fnToChartData";
 import { fnTimeToStr, fnYMToDateStr } from "@/lib/to/fnToDates";
+import { useTheme } from "@/lib/ThemeProvider";
 
 import Button from "./Inputs/Button";
 import Select from "./Inputs/Select";
-import Input from "./Inputs/Input";
-import InputNumber from "./Inputs/Number";
+import Text from "./Inputs/Text";
+import Number from "./Inputs/Number";
+import Option from "./Inputs/Option";
 
 interface LayoutInputProps {
   input: ChartDataInput;
   setInput: React.Dispatch<React.SetStateAction<ChartDataInput>>;
-  //data: ChartData | undefined;
   setData: React.Dispatch<React.SetStateAction<ChartData | undefined>>;
-  //loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LayoutInput = ({ input, setInput, setData, setLoading }: LayoutInputProps) => {
+export interface InputPropsEx {
+  label?: string;
+}
+
+const Input = ({ input, setInput, setData, setLoading }: LayoutInputProps) => {
+  const { theme, fnChangeTheme } = useTheme();
+
   const [dateStr, setDateStr] = useState<string>(
-    fnYMToDateStr(input.y, input.m, input.d)
+    fnYMToDateStr(input.y, input.m, input.d),
   );
   const [timeStr, setTimeStr] = useState<string>(
-    fnTimeToStr(input.h, input.i, input.s)
+    fnTimeToStr(input.h, input.i, input.s),
   );
 
   const setInputDate = (dateStr: string) =>
     setInput((prev) => {
       const date = new Date(`${dateStr}T00:00:00`);
-      
+
       if (isNaN(date.getTime())) {
         setDateStr(fnYMToDateStr(prev.y, prev.m, prev.d));
         return prev;
@@ -53,7 +59,7 @@ const LayoutInput = ({ input, setInput, setData, setLoading }: LayoutInputProps)
 
   const setInputTime = (timeStr: string) =>
     setInput((prev) => {
-      const [h, i, s] = timeStr.split(":").map(Number);
+      const [h, i, s] = timeStr.split(":").map((t) => t as unknown as number);
 
       return { ...prev, h: h ?? 0, i: i ?? 0, s: s ?? 0 };
     });
@@ -78,45 +84,46 @@ const LayoutInput = ({ input, setInput, setData, setLoading }: LayoutInputProps)
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div>日期</div>
-      <Input
+    <div className="flex flex-col gap-2">
+      <Text
         type="date"
         onChange={(e) => setDateStr(e.target.value)}
         value={dateStr}
         onBlur={(e) => setInputDate(e.target.value)}
+        label="選擇日期"
       />
-      <div className="mt-5">時間</div>
-      <Input
+      <Text
         type="time"
         onChange={(e) => setTimeStr(e.target.value)}
         value={timeStr}
         onBlur={(e) => setInputTime(e.target.value)}
+        label="選擇時間"
       />
-      <div className="mt-5">時區</div>
-      <InputNumber
-        onChange={(e) => setInputTz(Number(e.target.value))}
+      <Number
+        onChange={(e) => setInputTz(e.target.value as unknown as number)}
         step={0.5}
         min={-12}
         max={14}
         value={input.tz}
+        label="選擇時區"
       />
-      <div className="mt-5">位置</div>
       <Select
-        onChange={(e) => setInputLngLag(Number(e.target.value))}
+        onChange={(e) => setInputLngLag(e.target.value as unknown as number)}
         value={fnLngLagIdx(input.lngD, input.lngM, input.latD, input.latM)}
+        label="選擇位置"
       >
-        <option value=""> - 請選擇 - </option>
+        <Option value=""> - 請選擇 - </Option>
         {LngLatLocations.map((location, idx) => (
-          <option key={location} value={idx}>
+          <Option key={location} value={idx}>
             {fnLngLagDspByIdx(idx)}
-          </option>
+          </Option>
         ))}
       </Select>
       <div className="mt-5">&nbsp;</div>
       <Button onClick={fnSubmit}>送出</Button>
+      <Button onClick={fnChangeTheme}>切換主題 (目前: {theme})</Button>
     </div>
   );
 };
 
-export default LayoutInput;
+export default Input;

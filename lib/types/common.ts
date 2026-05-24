@@ -13,8 +13,10 @@ export type Lang = (typeof LangLists)[number];
 
 export type Label = Record<Lang, string>;
 
-export const ColorModeList = ["light", "dark", "system"] as const;
-export type ColorModeName = (typeof ColorModeList)[number];
+export const ColorSchemeList = ["light", "dark"] as const;
+export type ColorScheme = (typeof ColorSchemeList)[number];
+export const ColorSchemeDisplayList = ["light", "dark", "system"] as const;
+export type ColorSchemeDisplay = (typeof ColorSchemeDisplayList)[number];
 
 export type DMS = {
   degree: number; // 0-30

@@ -6,6 +6,7 @@ import type { XY } from "@/lib/types/common";
 import { PlanetConfigs } from "@/lib/types/planet";
 import { ChartConfig } from "@/lib/types/chartSetting";
 import { AspectConfigs } from "@/lib/types/aspect";
+
 import { fnDegToXY } from "@/lib/chart/fnDegToXY";
 import { fnDegToString } from "@/lib/to/string/fnDegToString";
 
@@ -43,7 +44,7 @@ const AstroChartAspect = ({
   );
 
   const lineWidth = (0.75 * power) / 100 + 0.25;
-  const lineDash = (5 * (1 - (power / 100))).toString();
+  const lineDash = (5 * (1 - power / 100)).toString();
 
   return (
     <g className="phase-line">

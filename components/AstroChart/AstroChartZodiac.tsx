@@ -1,26 +1,19 @@
-import type { ColorModeName, XY } from "@/lib/types/common";
+import type { XY } from "@/lib/types/common";
 import type { ChartDataHouse } from "@/lib/types/chartData";
 
 import { ZodiacConfigsArray } from "@/lib/types/zodiac";
+import { ChartConfig } from "@/lib/types/chartSetting";
 
 import { fnDegToXY } from "@/lib/chart/fnDegToXY";
-import { ChartConfig } from "@/lib/types/chartSetting";
 
 interface AstroChartZodiacProps {
   idx: number;
   deg: number;
   cXY: XY;
   len: number;
-  colorMode: ColorModeName;
 }
 
-const AstroChartZodiac = ({
-  idx,
-  deg,
-  cXY,
-  len,
-  colorMode,
-}: AstroChartZodiacProps) => {
+const AstroChartZodiac = ({ idx, deg, cXY, len }: AstroChartZodiacProps) => {
   const symbolPos = fnDegToXY(
     cXY,
     deg + 15,
@@ -64,11 +57,7 @@ const AstroChartZodiac = ({
             y1={fm.y}
             x2={to.x}
             y2={to.y}
-            stroke={
-              ChartConfig.color.line.sub[
-                colorMode as keyof typeof ChartConfig.color.line.sub
-              ]
-            }
+            stroke="currentColor"
             strokeWidth={1}
           />
         );
@@ -79,13 +68,9 @@ const AstroChartZodiac = ({
 
 interface AstroChartZodiacsProps {
   houses: ChartDataHouse[];
-  colorMode: ColorModeName;
 }
 
-const AstroChartZodiacs = ({
-  houses,
-  colorMode,
-}: AstroChartZodiacsProps) =>
+const AstroChartZodiacs = ({ houses }: AstroChartZodiacsProps) =>
   houses.map((_, idx: number) => (
     <AstroChartZodiac
       key={idx}
@@ -93,8 +78,7 @@ const AstroChartZodiacs = ({
       deg={(30 * idx - houses[0].degree + 360) % 360}
       cXY={ChartConfig.centerXY}
       len={ChartConfig.radius + ChartConfig.ticks.spacing}
-      colorMode={colorMode}
     />
   ));
 
-  export default AstroChartZodiacs;
+export default AstroChartZodiacs;
