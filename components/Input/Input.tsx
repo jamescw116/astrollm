@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { HTMLAttributes, useState } from "react";
 
 import type { ChartData, ChartDataInput } from "@/lib/types/chartData";
+import type { LayoutMode } from "../Layout/Layout";
 
 import {
   fnLngLagDspByIdx,
@@ -21,16 +22,18 @@ import Option from "./Inputs/Option";
 
 interface LayoutInputProps {
   input: ChartDataInput;
+  className?: HTMLAttributes<HTMLElement>["className"];
   setInput: React.Dispatch<React.SetStateAction<ChartDataInput>>;
   setData: React.Dispatch<React.SetStateAction<ChartData | undefined>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setMode: React.Dispatch<React.SetStateAction<LayoutMode>>;
 }
 
 export interface InputPropsEx {
   label?: string;
 }
 
-const Input = ({ input, setInput, setData, setLoading }: LayoutInputProps) => {
+const Input = ({ input, className, setInput, setData, setLoading, setMode }: LayoutInputProps) => {
   const { theme, fnChangeTheme } = useTheme();
 
   const [dateStr, setDateStr] = useState<string>(
@@ -81,10 +84,15 @@ const Input = ({ input, setInput, setData, setLoading }: LayoutInputProps) => {
     console.log("chartData", chartData);
     setData(chartData);
     setLoading(false);
+    setMode("星圖");
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <aside className={`flex flex-col gap-2 overflow-x-hidden p-2 border-gray-300
+      w-full h-full overflow-y-auto
+      md:w-1/5 md:min-w-37.5 md:max-w-[50%] md:resize-x md:border-b-0 md:border-r
+      ${className}
+    `}>
       <Text
         type="date"
         onChange={(e) => setDateStr(e.target.value)}
@@ -120,9 +128,11 @@ const Input = ({ input, setInput, setData, setLoading }: LayoutInputProps) => {
         ))}
       </Select>
       <div className="mt-5">&nbsp;</div>
-      <Button onClick={fnSubmit}>送出</Button>
-      <Button onClick={fnChangeTheme}>切換主題 (目前: {theme})</Button>
-    </div>
+      <div className="flex flex-1 flex-row md:flex-col justify-center items-center gap-2">
+      <Button className="flex w-full" onClick={fnSubmit}>送出</Button>
+      <Button className="flex w-full" onClick={fnChangeTheme}>切換主題 (目前: {theme})</Button>
+      </div>
+    </aside>
   );
 };
 

@@ -1,15 +1,21 @@
+import type { InputPropsEx } from "../Input";
+
 import { useTheme } from "@/lib/ThemeProvider";
+
+import Label from "./Label";
 
 const Button = ({
   children,
+  label,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & InputPropsEx) => {
   const { realTheme } = useTheme();
 
   return (
-    <button
-      {...props}
-      className={`
+    <Label className="p-0! mt-0! border-0!" label={label}>
+      <button
+        {...props}
+        className={`
         ${realTheme === "dark" ? "scheme-dark" : "scheme-light"}
         cursor-pointer
         font-semibold py-2 rounded-md transition-all duration-200 active:scale-95 appearance-none
@@ -17,9 +23,10 @@ const Button = ({
         text-white
         ${props.className}
       `}
-    >
-      {children}
-    </button>
+      >
+        {children}
+      </button>
+    </Label>
   );
 };
 

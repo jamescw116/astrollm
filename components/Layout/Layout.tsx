@@ -8,9 +8,10 @@ import Input from "../Input/Input";
 import AstroChart from "../AstroChart/AstroChart";
 import AI from "../AI/AI";
 import BasicInfo from "../BasicInfo/BasicInfo";
+import Button from "../Input/Inputs/Button";
 
-const LayoutMode = ["星圖", "基本資訊", "AI分析"] as const;
-type LayoutMode = (typeof LayoutMode)[number];
+export const LayoutMode = ["星圖", "基本資訊", "AI分析", "輸入"] as const;
+export type LayoutMode = (typeof LayoutMode)[number];
 
 const fnDefaultChartDataInput = (date: Date = new Date()): ChartDataInput =>
   ({
@@ -37,48 +38,53 @@ const Layout = () => {
       `}
     >
       {/* 左方區域：設定為 resize 水平方向，預設 20% */}
-      <aside className="w-1/5 min-w-37.5 max-w-[50%] resize-x overflow-hidden border-r md:border-b-0 md:border-r border-gray-300 p-4">
-        {/* 在此放入你的輸入元件 */}
-        <Input
-          input={input}
-          setInput={setInput}
-          setData={setData}
-          setLoading={setLoading}
-        />
-      </aside>
+      {/* 在此放入你的輸入元件 */}
+      <Input
+        input={input}
+        setInput={setInput}
+        setData={setData}
+        setLoading={setLoading}
+        setMode={setMode}
+        className="hidden md:flex"
+      />
 
       {/* 右方區域：佔據剩餘空間 */}
-      <main className="flex-1 flex flex-col p-6 overflow-hidden">
-        <div className="flex flex-row gap-5">
-          {LayoutMode.map((m) => (
-            <h2
-              key={m}
-              className={"font-bold mb-4"}
-              {...(m !== mode
-                ? { onClick: () => setMode(m), style: { cursor: "pointer" } }
-                : {
-                    style: {
-                      cursor: "default",
-                      color: "var(--color-blue-500)",
-                    },
-                  })}
-            >
-              {m}
-            </h2>
-          ))}
+      <main className="flex-1 flex flex-col p-3 md:p-6 overflow-hidden">
+        <div className="flex flex-row gap-2 mb-4">
+          <Button onClick={() => setMode("星圖")}>星盤</Button>
+          <Button onClick={() => setMode("基本資訊")}>資訊</Button>
+          <Button onClick={() => setMode("AI分析")}>AI分析</Button>
+          <Button className="md:hidden" onClick={() => setMode("輸入")}>
+            輸入
+          </Button>
         </div>
-        <div className="flex md:hidden gap-2 mb-4">
-          <button onClick={() => setMode("星圖")}>星盤</button>
-          <button onClick={() => setMode("基本資訊")}>資訊</button>
-          <button onClick={() => setMode("AI分析")}>AI</button>
-        </div>
-        <div className="flex flex-col w-full min-h-0 flex-1 justify-center items-center border border-gray-600 rounded-lg p-6">
+        <div
+          className={`
+            flex flex-col w-full min-h-0 flex-1
+            justify-center items-center
+            border border-gray-600 rounded-lg p-2 md:p-6
+        `}
+        >
           {/* 在此放入你的結果元件 */}
           {data && mode === "星圖" && <AstroChart data={data} />}
           {data && mode === "基本資訊" && <BasicInfo chartData={data} />}
           {data && mode === "AI分析" && <AI chartData={data} />}
-          {!data && loading && <div className="flex">載入中...</div>}
-          {!data && !loading && <div className="flex">請提供星盤資料</div>}
+          {mode === "輸入" && (
+            <Input
+              input={input}
+              setInput={setInput}
+              setData={setData}
+              setLoading={setLoading}
+              setMode={setMode}
+              className="flex md:hidden"
+            />
+          )}
+          {!data && loading && mode !== "輸入" && (
+            <div className="flex">載入中...</div>
+          )}
+          {!data && !loading && mode !== "輸入" && (
+            <div className="flex">請提供星盤資料</div>
+          )}
         </div>
       </main>
     </div>

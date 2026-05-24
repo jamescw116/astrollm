@@ -1,3 +1,5 @@
+import { HTMLAttributes } from "react";
+
 import type { InputPropsEx } from "../Input";
 
 import { useTheme } from "@/lib/ThemeProvider";
@@ -5,10 +7,11 @@ import { useTheme } from "@/lib/ThemeProvider";
 const Label = ({
   children,
   label,
+  className
 }: React.InputHTMLAttributes<
   HTMLInputElement | HTMLSelectElement | HTMLButtonElement
 > &
-  InputPropsEx) => {
+  InputPropsEx & { className?: HTMLAttributes<HTMLElement>["className"] }) => {
   const { realTheme } = useTheme();
 
   return (
@@ -16,6 +19,7 @@ const Label = ({
       className={`
         ${realTheme === "dark" ? "scheme-dark" : "scheme-light"}
         relative border border-gray-600 rounded-lg p-1 mt-4
+        ${className}
     `}
     >
       {label && (

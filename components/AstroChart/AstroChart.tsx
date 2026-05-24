@@ -9,6 +9,7 @@ import { ChartConfig } from "@/lib/types/chartSetting";
 import { fnGetPanBoundsInUnits } from "@/lib/chart/fnGetPanBoundsUnUnits";
 
 import AstroChartCore from "./AstroChartCore";
+import { fnGetEventCoords } from "@/lib/chart/fnGetEventCoords";
 
 interface AstroChartProps {
   data: ChartData;
@@ -28,7 +29,7 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
   );
 
   // 滾輪縮放
-  const handleWheel = useCallback(
+  const fnZoomByWheel = useCallback(
     (e: globalThis.WheelEvent) => {
       if (e.ctrlKey || e.metaKey) return; // 避免與瀏覽器縮放衝突
       e.preventDefault();
@@ -49,18 +50,33 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     [clamp, svgRef],
   );
 
-  const handleMouseDown = useCallback((e: globalThis.MouseEvent) => {
-    if (e.button !== 0) return;
-    setIsDragging(true);
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-  }, []);
+  const fnMoveStart = useCallback(
+    (e: globalThis.MouseEvent | globalThis.TouchEvent) => {
+      // 1. 防止移動端捲動衝突 (重要！)
+      if (e.type === "touchstart") {
+        e.preventDefault();
+      } else {
+        e.preventDefault();
+        if ((e as globalThis.MouseEvent).button !== 0) return;
+      }
 
-  const handleMouseMove = useCallback(
-    (e: globalThis.MouseEvent) => {
+      setIsDragging(true);
+      dragStartRef.current = fnGetEventCoords(e);
+    },
+    [],
+  );
+
+  const fnMoving = useCallback(
+    (e: globalThis.MouseEvent | globalThis.TouchEvent) => {
       if (!isDragging || !dragStartRef.current) return;
 
-      const dx = e.clientX - dragStartRef.current.x;
-      const dy = e.clientY - dragStartRef.current.y;
+      if (e.type === "touchmove") {
+        e.preventDefault();
+      }
+
+      const { x, y } = fnGetEventCoords(e);
+      const dx = x - dragStartRef.current.x;
+      const dy = y - dragStartRef.current.y;
       const bounds = fnGetPanBoundsInUnits(svgRef, scale);
       const dxUnits = dx * bounds.unitsPerPx;
       const dyUnits = dy * bounds.unitsPerPx;
@@ -69,12 +85,12 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
         x: clamp(prev.x + dxUnits, bounds.minX, bounds.maxX),
         y: clamp(prev.y + dyUnits, bounds.minY, bounds.maxY),
       }));
-      dragStartRef.current = { x: e.clientX, y: e.clientY };
+      dragStartRef.current = { x, y };
     },
     [clamp, scale, isDragging, svgRef],
   );
 
-  const handleMouseUp = useCallback(() => {
+  const fnMoveEnd = useCallback(() => {
     setIsDragging(false);
     dragStartRef.current = null;
   }, []);
@@ -84,20 +100,24 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
 
     if (!svg) return;
 
-    svg.addEventListener("wheel", handleWheel, { passive: false });
-    svg.addEventListener("mousedown", handleMouseDown);
-    svg.addEventListener("mousemove", handleMouseMove);
-    svg.addEventListener("mouseup", handleMouseUp);
-    svg.addEventListener("mouseleave", handleMouseUp);
+    svg.addEventListener("wheel", fnZoomByWheel, { passive: false });
+
+    svg.addEventListener("pointerdown", fnMoveStart, { passive: false });
+    svg.addEventListener("pointermove", fnMoving, { passive: false });
+    svg.addEventListener("pointerup", fnMoveEnd);
+    svg.addEventListener("pointercancel", fnMoveEnd);
+    svg.addEventListener("pointerleave", fnMoveEnd);
 
     return () => {
-      svg.removeEventListener("wheel", handleWheel);
-      svg.removeEventListener("mousedown", handleMouseDown);
-      svg.removeEventListener("mousemove", handleMouseMove);
-      svg.removeEventListener("mouseup", handleMouseUp);
-      svg.removeEventListener("mouseleave", handleMouseUp);
+      svg.removeEventListener("wheel", fnZoomByWheel);
+
+      svg.removeEventListener("pointerdown", fnMoveStart);
+      svg.removeEventListener("pointermove", fnMoving);
+      svg.removeEventListener("pointerup", fnMoveEnd);
+      svg.removeEventListener("pointercancel", fnMoveEnd);
+      svg.removeEventListener("pointerleave", fnMoveEnd);
     };
-  }, [handleWheel, handleMouseDown, handleMouseMove, handleMouseUp]);
+  }, [fnZoomByWheel, fnMoveStart, fnMoving, fnMoveEnd]);
 
   return (
     <AstroChartCore
