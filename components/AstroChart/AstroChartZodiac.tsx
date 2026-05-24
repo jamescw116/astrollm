@@ -30,7 +30,7 @@ const AstroChartZodiac = ({
   const zodiac = ZodiacConfigsArray[idx % 12];
 
   return (
-    <>
+    <g>
       <text
         key={"zodiac-label-" + idx}
         x={symbolPos.x}
@@ -73,7 +73,7 @@ const AstroChartZodiac = ({
           />
         );
       })}
-    </>
+    </g>
   );
 };
 

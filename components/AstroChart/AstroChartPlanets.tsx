@@ -44,7 +44,7 @@ const AstroChartPlanet = ({
         fill={PlanetConfigs[planetName].color}
         style={{ userSelect: "none", pointerEvents: "auto", cursor: "pointer" }}
       >
-        <title>{fnZodiacDMSToString({ zodiacDMS: planet.zodiacDMS })}</title>
+        <title>{fnZodiacDMSToString({ zodiacDMS: planet.zodiacDMS, zodiac: "symbol" })}</title>
         {PlanetConfigs[planetName]?.symbol || "?"}
       </text>
 

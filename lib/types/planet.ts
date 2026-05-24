@@ -1,6 +1,8 @@
 import type { Label } from "./common";
 import type { ZodiacName } from "./zodiac";
 
+import { ChartConfig } from "./chartSetting";
+
 export const PlanetList = [
   "sun",
   "moon",
@@ -49,7 +51,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "日", en: "Sun" },
     type: "main",
     symbol: "\u2609", // ☉
-    color: "#E94E77", //"#FFD700",
+    color: ChartConfig.colorName.red,
     domicile: ["leo"],
     exaltation: ["aries"],
     fall: ["libra"],
@@ -59,7 +61,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "月", en: "Moon" },
     type: "main",
     symbol: "\u263D", // ☽
-    color: "#4A90E2", //"#B0C4DE",
+    color: ChartConfig.colorName.blue,
     domicile: ["cancer"],
     exaltation: ["taurus"],
     fall: ["scorpio"],
@@ -69,7 +71,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "水", en: "Mercury" },
     type: "main",
     symbol: "\u263F", // ☿
-    color: "#50E3C2", //"#aaa",
+    color: ChartConfig.colorName.green,
     domicile: ["gemini", "virgo"],
     exaltation: ["aquarius"],
     fall: ["leo"],
@@ -79,7 +81,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "金", en: "Venus" },
     type: "main",
     symbol: "\u2640", // ♀
-    color: "#50E3C2", //"#f8c",
+    color: ChartConfig.colorName.green,
     domicile: ["taurus", "libra"],
     exaltation: ["pisces"],
     fall: ["virgo"],
@@ -89,7 +91,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "火", en: "Mars" },
     type: "main",
     symbol: "\u2642", // ♂
-    color: "#E94E77", //"#f44",
+    color: ChartConfig.colorName.red,
     domicile: ["aries", "scorpio"],
     exaltation: ["capricorn"],
     fall: ["cancer"],
@@ -99,7 +101,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "木", en: "Jupiter" },
     type: "main",
     symbol: "\u2643", // ♃
-    color: "#E94E77", //"#ffb347",
+    color: ChartConfig.colorName.red,
     domicile: ["sagittarius", "pisces"],
     exaltation: ["cancer"],
     fall: ["capricorn"],
@@ -109,7 +111,7 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "土", en: "Saturn" },
     type: "main",
     symbol: "\u2644", // ♄
-    color: "#F5A623", //"#deb887",
+    color: ChartConfig.colorName.yellow,
     domicile: ["capricorn", "aquarius"],
     exaltation: ["libra"],
     fall: ["aries"],
@@ -119,21 +121,21 @@ export const PlanetConfigs: PlanetConfigs = {
     label: { zh: "天", en: "Uranus" },
     type: "sub",
     symbol: "\u2645", // ♅
-    color: "#50E3C2", //"#40e0d0",
+    color: ChartConfig.colorName.green,
     orb: 3,
   },
   neptune: {
     label: { zh: "海", en: "Neptune" },
     type: "sub",
     symbol: "\u2646", // ♆
-    color: "#4A90E2", //"#6495ed",
+    color: ChartConfig.colorName.blue,
     orb: 3,
   },
   pluto: {
     label: { zh: "冥", en: "Pluto" },
     type: "sub",
     symbol: "\u2647", // ♇
-    color: "#4A90E2", //"#b22222",
+    color: ChartConfig.colorName.blue,
     orb: 3,
   },
 } satisfies Record<PlanetName, PlanetConfig>;

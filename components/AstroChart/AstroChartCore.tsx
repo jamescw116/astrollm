@@ -55,24 +55,23 @@ const AstroChartCore = ({
           <g
             transform={`translate(${(1 - scale) * ChartConfig.centerXY.x} ${(1 - scale) * ChartConfig.centerXY.y}) scale(${scale})`}
           >
-            {/* 相位線 */}
-            <AstroChartAspects
-              aspects={data.aspects}
-              planets={data.planets}
-              ascDeg={data.houses[0].degree}
-              colorMode={colorMode}
-            />
             {/* 12宮線 */}
             <AstroChartHouses houses={data.houses} colorMode={colorMode} />
+            {/* 地平線與天底天頂線 */}
+            <AstroChartAxisLines houses={data.houses} colorMode={colorMode} />
             {/* 星座 */}
             <AstroChartZodiacs houses={data.houses} colorMode={colorMode} />
-            {/* 行星符號 */}
+            {/* 行星 */}
             <AstroChartPlanets
               planets={data.planets}
               ascDeg={data.houses[0].degree}
             />
-            {/* 地平線與天底天頂線 */}
-            <AstroChartAxisLines houses={data.houses} colorMode={colorMode} />
+            {/* 相位 */}
+            <AstroChartAspects
+              aspects={data.aspects}
+              planets={data.planets}
+              ascDeg={data.houses[0].degree}
+            />
           </g>
         </g>
       </svg>

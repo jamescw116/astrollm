@@ -1,6 +1,8 @@
 import type { DMS, Label } from "./common";
 import type { AstroPointType, PlanetConfigType } from "./planet";
 
+import { ChartConfig } from "./chartSetting";
+
 export const AspectList = [
   "conjunction", // 合相 0°
   "sextile", // 六分相 60°
@@ -75,7 +77,7 @@ export const AspectConfigs: AspectConfigs = {
       zodiac: 1,
     },
     zodiacDiff: 0,
-    color: "#FFD700",
+    color: ChartConfig.colorName.yellow,
   },
   opposition: {
     label: { zh: "對分相", en: "Opposition" },
@@ -84,7 +86,7 @@ export const AspectConfigs: AspectConfigs = {
     degree: 180,
     orb: { main: 8, sub: 8 },
     zodiacDiff: 6,
-    color: "#4A90E2",
+    color: ChartConfig.colorName.blue,
   },
   trine: {
     label: { zh: "三分相", en: "Trine" },
@@ -93,7 +95,7 @@ export const AspectConfigs: AspectConfigs = {
     degree: 120,
     orb: { main: 6, sub: 6 },
     zodiacDiff: 4,
-    color: "#50E3C2",
+    color: ChartConfig.colorName.green,
   },
   square: {
     label: { zh: "四分相", en: "Square" },
@@ -102,7 +104,7 @@ export const AspectConfigs: AspectConfigs = {
     degree: 90,
     orb: { main: 6, sub: 6 },
     zodiacDiff: 3,
-    color: "#E94E77",
+    color: ChartConfig.colorName.red,
   },
   sextile: {
     label: { zh: "六分相", en: "Sextile" },
@@ -111,7 +113,7 @@ export const AspectConfigs: AspectConfigs = {
     degree: 60,
     orb: { main: 6, sub: 6 },
     zodiacDiff: 2,
-    color: "#00FF00",
+    color: ChartConfig.colorName.cyan,
   },
 
   semisextile: {
@@ -121,7 +123,7 @@ export const AspectConfigs: AspectConfigs = {
     degree: 30,
     orb: { main: 3, sub: 3 },
     zodiacDiff: 1,
-    color: "#00FFFF",
+    color: ChartConfig.colorName.magenta,
   },
 
   quincunx: {
@@ -131,7 +133,7 @@ export const AspectConfigs: AspectConfigs = {
     degree: 150,
     orb: { main: 3, sub: 3 },
     zodiacDiff: 5,
-    color: "#FFA500",
+    color: ChartConfig.colorName.magenta,
   },
 } satisfies Record<AspectName, AspectConfig>;
 

@@ -27,7 +27,7 @@ export const fnChartDataToString = (
         zodiac: "string",
         lang,
       }),
-      ", 落入 ",
+      ", ",
       fnHouseToString({ idx: planet.atHouse, lang }),
     ].join(""),
   ),

@@ -10,7 +10,7 @@ interface AIProps {
 }
 
 const AI = ({ chartData }: AIProps) => {
-  const [aiResp, setAiResp] = useState<string>(); //useRemoteData(fnAnalyse, chartData);
+  const [aiResp, setAiResp] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const fnSubmit = async () => {

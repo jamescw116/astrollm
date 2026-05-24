@@ -7,8 +7,9 @@ import { fnLngLagByIdx } from "@/lib/types/LngLat";
 import LayoutInput from "./LayoutInput";
 import AstroChart from "../AstroChart/AstroChart";
 import AI from "../AI/AI";
+import BasicInfo from "../BasicInfo/BasicInfo";
 
-const LayoutMode = ["星圖", "AI分析"] as const;
+const LayoutMode = ["星圖", "基本資訊", "AI分析"] as const;
 type LayoutMode = (typeof LayoutMode)[number];
 
 const fnDefaultChartDataInput = (date: Date = new Date()): ChartDataInput =>
@@ -61,6 +62,8 @@ const Layout = () => {
           {data ? (
             mode === "星圖" ? (
               <AstroChart data={data} />
+            ) : mode === "基本資訊" ? (
+              <BasicInfo chartData={data} />
             ) : (
               <AI chartData={data} />
             )

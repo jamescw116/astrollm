@@ -3,7 +3,6 @@ import type { Lang } from "@/lib/types/common";
 
 import { ZodiacConfigs } from "@/lib/types/zodiac";
 
-import { fnToCapitalize } from "../fnToCapitalize";
 import { fnToLabel } from "./fnToLabel";
 
 export type ZodiacLabelFormat = "string" | "symbol" | "";

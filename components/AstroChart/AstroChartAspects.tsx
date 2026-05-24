@@ -1,27 +1,36 @@
 import type { ChartDataAspect, ChartDataPlanets } from "@/lib/types/chartData";
 import type { PlanetName } from "@/lib/types/planet";
 import type { AspectName } from "@/lib/types/aspect";
-import type { ColorModeName, XY } from "@/lib/types/common";
+import type { XY } from "@/lib/types/common";
 
+import { PlanetConfigs } from "@/lib/types/planet";
 import { ChartConfig } from "@/lib/types/chartSetting";
 import { AspectConfigs } from "@/lib/types/aspect";
 import { fnDegToXY } from "@/lib/chart/fnDegToXY";
+import { fnDegToString } from "@/lib/to/string/fnDegToString";
 
 interface AstroChartAspectProps {
-  aspect: AspectName;
+  aspectName: AspectName;
+  fromName: string;
   p1Deg: number;
+  toName: string;
   p2Deg: number;
   power: number;
-  colorMode: ColorModeName;
+  diff: number;
 }
 
 const AstroChartAspect = ({
-  aspect,
+  aspectName,
+  fromName,
   p1Deg,
+  toName,
   p2Deg,
   power,
-  colorMode,
+  diff,
 }: AstroChartAspectProps) => {
+  const p1Name = PlanetConfigs[fromName as PlanetName].symbol;
+  const p2Name = PlanetConfigs[toName as PlanetName].symbol;
+
   const fmXY: XY = fnDegToXY(
     ChartConfig.centerXY,
     p1Deg,
@@ -33,19 +42,33 @@ const AstroChartAspect = ({
     ChartConfig.radiusAspect - 1,
   );
 
-  const lineWidth = (0.75 * power / 100) + 0.25;
-  //const lineDash = (5 * (1 - (power / 100))).toString();
+  const lineWidth = (0.75 * power) / 100 + 0.25;
+  const lineDash = (5 * (1 - (power / 100))).toString();
 
   return (
-    <line
-      x1={fmXY.x}
-      y1={fmXY.y}
-      x2={toXY.x}
-      y2={toXY.y}
-      stroke={AspectConfigs[aspect].color}
-      strokeWidth={lineWidth}
-      //strokeDasharray={`${lineDash} ${lineDash}`}
-    />
+    <g className="phase-line">
+      <line
+        x1={fmXY.x}
+        y1={fmXY.y}
+        x2={toXY.x}
+        y2={toXY.y}
+        stroke={AspectConfigs[aspectName].color}
+        strokeWidth={lineWidth}
+        strokeDasharray={`${lineDash} ${lineDash}`}
+        style={{ userSelect: "none", pointerEvents: "auto", cursor: "pointer" }}
+      />
+      <line
+        x1={fmXY.x}
+        y1={fmXY.y}
+        x2={toXY.x}
+        y2={toXY.y}
+        stroke="transparent"
+        strokeWidth={5}
+        style={{ userSelect: "none", pointerEvents: "auto", cursor: "pointer" }}
+      >
+        <title>{`${p1Name} ${AspectConfigs[aspectName].symbol} ${p2Name} (${fnDegToString({ deg: diff })})`}</title>
+      </line>
+    </g>
   );
 };
 
@@ -53,18 +76,17 @@ interface AstroChartAspectsProps {
   aspects: ChartDataAspect[];
   planets: ChartDataPlanets;
   ascDeg: number;
-  colorMode: ColorModeName;
 }
 
 const AstroChartAspects = ({
   aspects,
   planets,
   ascDeg,
-  colorMode,
 }: AstroChartAspectsProps) =>
   aspects
     .filter(
       (aspect) =>
+        AspectConfigs[aspect.aspect as AspectName].type === "main" &&
         ["main", "sub"].includes(aspect.fromType) &&
         ["main", "sub"].includes(aspect.toType),
     )
@@ -77,11 +99,13 @@ const AstroChartAspects = ({
       return (
         <AstroChartAspect
           key={idx}
-          aspect={aspect.aspect as AspectName}
+          aspectName={aspect.aspect as AspectName}
+          fromName={aspect.fromName}
           p1Deg={p1}
+          toName={aspect.toName as PlanetName}
           p2Deg={p2}
           power={aspect.power}
-          colorMode={colorMode}
+          diff={aspect.degreeDiff}
         />
       );
     });
