@@ -2,6 +2,7 @@ import { HTMLAttributes, useState } from "react";
 
 import type { ChartData, ChartDataInput } from "@/lib/types/chartData";
 import type { LayoutMode } from "../Layout/Layout";
+import type { HouseSystemName } from "@/lib/types/houseSystem";
 
 import {
   fnLngLagDspByIdx,
@@ -19,6 +20,7 @@ import Select from "./Inputs/Select";
 import Text from "./Inputs/Text";
 import Number from "./Inputs/Number";
 import Option from "./Inputs/Option";
+import { HouseSystemList, HouseSystemNames } from "@/lib/types/houseSystem";
 
 interface LayoutInputProps {
   input: ChartDataInput;
@@ -83,6 +85,9 @@ const Input = ({
       return { ...prev, lngD, lngM, latD, latM, tz };
     });
 
+  const setInputHouseSystem = (hse: HouseSystemName) =>
+    setInput((prev) => ({ ...prev, hse }));
+
   const fnSubmit = async () => {
     setMode("星圖");
     setData(undefined);
@@ -133,6 +138,18 @@ const Input = ({
         {LngLatLocations.map((location, idx) => (
           <Option key={location} value={idx}>
             {fnLngLagDspByIdx(idx)}
+          </Option>
+        ))}
+      </Select>
+      <Select
+        onChange={(e) => setInputHouseSystem(e.target.value as HouseSystemName)}
+        value={input.hse}
+        label="選擇宮位"
+      >
+        <Option value=""> - 請選擇 - </Option>
+        {HouseSystemList.map((hse) => (
+          <Option key={hse} value={hse}>
+            {HouseSystemNames[hse]}
           </Option>
         ))}
       </Select>

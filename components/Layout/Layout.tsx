@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { ChartData, ChartDataInput } from "@/lib/types/chartData";
 
@@ -22,6 +22,7 @@ const fnDefaultChartDataInput = (date: Date = new Date()): ChartDataInput =>
     i: date.getMinutes(),
     s: date.getSeconds(),
     ...fnLngLagByIdx(0),
+    hse: "P",
   }) as ChartDataInput;
 
 const Layout = () => {
@@ -29,6 +30,18 @@ const Layout = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<ChartData | undefined>(undefined);
   const [mode, setMode] = useState<LayoutMode>(LayoutMode[0]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMode(window.innerWidth < 768 ? "輸入" : "星圖");
+    };
+
+    // 初始化執行一次
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div

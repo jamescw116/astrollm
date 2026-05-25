@@ -6,10 +6,20 @@ export const HouseSystemList = [
   "O", // Porphyry
   "R", // Regiomontanus
   "C", // Campanus
-  "A", // Equal (Ascendant)
-  "E", // Equal (MC)
+  "A", // Ascendant
+  "E", // Equal
   "W", // Whole Sign
 ] as const;
+export const HouseSystemNames = {
+  P: "Placidus",
+  K: "Koch",
+  O: "Porphyry",
+  R: "Regiomontanus",
+  C: "Campanus",
+  A: "Ascendant",
+  E: "Equal",
+  W: "Whole Sign"
+} as const;
 export type HouseSystemName = (typeof HouseSystemList)[number];
 
 export const HouseNames: Label[] = [

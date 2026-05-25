@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useGesture } from "@use-gesture/react";
 
 import type { ChartData } from "@/lib/types/chartData";
@@ -8,7 +8,6 @@ import type { ChartData } from "@/lib/types/chartData";
 import { ChartConfig } from "@/lib/types/chartSetting";
 
 import { fnGetPanBoundsInUnits } from "@/lib/chart/fnGetPanBoundsUnUnits";
-import { fnGetEventCoords } from "@/lib/chart/fnGetEventCoords";
 
 import AstroChartCore from "./AstroChartCore";
 import { XY } from "@/lib/types/common";
