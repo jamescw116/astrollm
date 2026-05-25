@@ -67,12 +67,12 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
         fnMoving(dx, dy);
         setIsDragging(active);
       },
-      onPinch: ({ delta: [d] }) => fnZoom(d > 0 ? -0.1 : 0.1),
-      onWheel: ({ direction: [, dy] }) => fnZoom(dy > 0 ? -0.1 : 0.1)
+      onPinch: ({ delta: [d] }) => fnZoom(d > 0 ? 0.1 : -0.1),
+      onWheel: ({ direction: [, dy] }) => fnZoom(dy > 0 ? -0.1 : 0.1),
     },
     {
       drag: { from: () => [pan.x, pan.y], filterTaps: true },
-      wheel: { eventOptions: { passive: false } }
+      wheel: { eventOptions: { passive: false } },
     },
   );
 
