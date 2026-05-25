@@ -10,10 +10,12 @@ import AstroChartZodiacs from "./AstroChartZodiac";
 import AstroChartPlanets from "./AstroChartPlanets";
 import AstroChartAxisLines from "./AstroChartAxisLine";
 import AstroChartAspects from "./AstroChartAspects";
+import { useGesture } from "@use-gesture/react/dist/declarations/src/useGesture";
 
 interface AstroChartCoreProps {
   data: ChartData;
   svgRef: React.RefObject<SVGSVGElement | null>;
+  bind: ReturnType<typeof useGesture>;
   scale: number;
   setScale: React.Dispatch<React.SetStateAction<number>>;
   pan: XY;
@@ -24,6 +26,7 @@ interface AstroChartCoreProps {
 const AstroChartCore = ({
   data,
   svgRef,
+  bind,
   scale,
   setScale,
   pan,
@@ -40,6 +43,7 @@ const AstroChartCore = ({
         `}
     >
       <svg
+        {...bind()}
         className="w-full h-full touch-none"
         ref={svgRef}
         viewBox={`0 0 ${ChartConfig.size} ${ChartConfig.size}`} // 0 0 400 400

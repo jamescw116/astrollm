@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useGesture } from "@use-gesture/react";
 
 import type { ChartData } from "@/lib/types/chartData";
 
@@ -8,9 +9,9 @@ import { ChartConfig } from "@/lib/types/chartSetting";
 
 import { fnGetPanBoundsInUnits } from "@/lib/chart/fnGetPanBoundsUnUnits";
 import { fnGetEventCoords } from "@/lib/chart/fnGetEventCoords";
-import usePointerGestures from "@/lib/hooks/usePointerGestures";
 
 import AstroChartCore from "./AstroChartCore";
+import { XY } from "@/lib/types/common";
 
 interface AstroChartProps {
   data: ChartData;
@@ -18,9 +19,9 @@ interface AstroChartProps {
 
 const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
   const [scale, setScale] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [pan, setPan] = useState<XY>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
+  //const dragStartRef = useRef<{ x: number; y: number } | null>(null);*/
   const svgRef = useRef<SVGSVGElement>(null);
 
   const clamp = useCallback(
@@ -29,7 +30,7 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     [],
   );
 
-  const fnZoomCore = useCallback(
+  const fnZoom = useCallback(
     (delta: number) => {
       setScale((prev) => {
         let next = prev + delta;
@@ -47,33 +48,7 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     [clamp, svgRef],
   );
 
-  // 滾輪縮放
-  const fnZoomByWheel = useCallback(
-    (e: globalThis.WheelEvent) => {
-      if (e.ctrlKey || e.metaKey) return; // 避免與瀏覽器縮放衝突
-      e.preventDefault();
-      fnZoomCore(e.deltaY > 0 ? -0.1 : 0.1);
-    },
-    [fnZoomCore],
-  );
-
-  const fnMoveStart = useCallback(
-    (e: globalThis.MouseEvent | globalThis.TouchEvent) => {
-      // 1. 防止移動端捲動衝突 (重要！)
-      if (e.type === "touchstart") {
-        e.preventDefault();
-      } else {
-        e.preventDefault();
-        if ((e as globalThis.MouseEvent).button !== 0) return;
-      }
-
-      setIsDragging(true);
-      dragStartRef.current = fnGetEventCoords(e);
-    },
-    [],
-  );
-
-  const fnMovingCore = useCallback(
+  const fnMoving = useCallback(
     (dx: number, dy: number) => {
       const bounds = fnGetPanBoundsInUnits(svgRef, scale);
       const dxUnits = dx * bounds.unitsPerPx;
@@ -86,59 +61,26 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     [clamp, scale, svgRef],
   );
 
-  const fnMoving = useCallback(
-    (e: globalThis.MouseEvent | globalThis.TouchEvent) => {
-      if (!isDragging || !dragStartRef.current) return;
-
-      if (e.type === "touchmove") {
-        e.preventDefault();
-      }
-
-      const { x, y } = fnGetEventCoords(e);
-      fnMovingCore(x - dragStartRef.current.x, y - dragStartRef.current.y);
-      dragStartRef.current = { x, y };
+  const bind = useGesture(
+    {
+      onDrag: ({ active, delta: [dx, dy] }) => {
+        fnMoving(dx, dy);
+        setIsDragging(active);
+      },
+      onPinch: ({ delta: [d] }) => fnZoom(d > 0 ? -0.1 : 0.1),
+      onWheel: ({ direction: [, dy] }) => fnZoom(dy > 0 ? -0.1 : 0.1)
     },
-    [isDragging, fnMovingCore],
+    {
+      drag: { from: () => [pan.x, pan.y], filterTaps: true },
+      wheel: { eventOptions: { passive: false } }
+    },
   );
-
-  const fnMoveEnd = useCallback(() => {
-    setIsDragging(false);
-    dragStartRef.current = null;
-  }, []);
-
-  usePointerGestures(svgRef, {
-    onDrag: fnMovingCore,
-    onZoom: fnZoomCore,
-  });
-
-  useEffect(() => {
-    const svg = svgRef.current;
-
-    if (!svg) return;
-
-    svg.addEventListener("wheel", fnZoomByWheel, { passive: false });
-
-    svg.addEventListener("pointerdown", fnMoveStart, { passive: false });
-    svg.addEventListener("pointermove", fnMoving, { passive: false });
-    svg.addEventListener("pointerup", fnMoveEnd);
-    svg.addEventListener("pointercancel", fnMoveEnd);
-    svg.addEventListener("pointerleave", fnMoveEnd);
-
-    return () => {
-      svg.removeEventListener("wheel", fnZoomByWheel);
-
-      svg.removeEventListener("pointerdown", fnMoveStart);
-      svg.removeEventListener("pointermove", fnMoving);
-      svg.removeEventListener("pointerup", fnMoveEnd);
-      svg.removeEventListener("pointercancel", fnMoveEnd);
-      svg.removeEventListener("pointerleave", fnMoveEnd);
-    };
-  }, [fnZoomByWheel, fnMoveStart, fnMoving, fnMoveEnd]);
 
   return (
     <AstroChartCore
       data={data}
       svgRef={svgRef}
+      bind={bind}
       scale={scale}
       setScale={setScale}
       pan={pan}
