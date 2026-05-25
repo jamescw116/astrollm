@@ -27,8 +27,8 @@ export const fnChartDataToString = (
         zodiac: "string",
         lang,
       }),
-      ", ",
-      fnHouseToString({ idx: planet.atHouse, lang }),
+//      ", ",
+//      fnHouseToString({ idx: planet.atHouse, lang }),
     ].join(""),
   ),
   互融: chartData.mutualReceptions.map((mr) =>
