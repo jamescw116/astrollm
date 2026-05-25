@@ -1,4 +1,4 @@
-import { GoogleGenAI, ThinkingLevel } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 import type { LLMProvider, LLMProviderParams } from "../fnAnalyze";
 
@@ -14,7 +14,7 @@ const fnGoogleGenAI: LLMProvider = async ({
 }: LLMProviderParams): Promise<string | undefined> => {
   const response = await ai.models.generateContent({
     model: process.env.GOOGLE_GEN_AI_MODEL!,
-    contents: message,
+    contents: [{ role: 'user', parts: [{ text:message }] }],
     config: {
       /*thinkingConfig: {
         thinkingLevel: ThinkingLevel.HIGH,
