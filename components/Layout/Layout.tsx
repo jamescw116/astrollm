@@ -30,6 +30,7 @@ const Layout = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<ChartData | undefined>(undefined);
   const [mode, setMode] = useState<LayoutMode>(LayoutMode[0]);
+  const [aiResp, setAiResp] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const handleResize = () => {
@@ -81,7 +82,7 @@ const Layout = () => {
           {/* 在此放入你的結果元件 */}
           {data && mode === "星圖" && <AstroChart data={data} />}
           {data && mode === "基本資訊" && <BasicInfo chartData={data} />}
-          {data && mode === "AI分析" && <AI chartData={data} />}
+          {data && mode === "AI分析" && <AI chartData={data} aiResp={aiResp} setAiResp={setAiResp} />}
           {mode === "輸入" && (
             <Input
               input={input}

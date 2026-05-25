@@ -1,6 +1,6 @@
 "use server";
 
-import type { ChartData } from "@/lib/types/chartData";
+import type { ChartData, ChartDataString } from "@/lib/types/chartData";
 
 import { Timer } from "../common/Timer";
 
@@ -21,6 +21,9 @@ export interface LLMProviderParams {
 export type LLMProvider = (
   params: LLMProviderParams,
 ) => Promise<string | undefined>;
+
+const AllowedSections: Array<keyof ChartDataString | "總結"> =
+  process.env.LLM_ALLOW_SECTIONS?.split(",") as Array<keyof ChartDataString | "總結">;
 
 export const fnAnalyse = async (data: ChartData): Promise<string> => {
   const cdStr = fnChartDataToString(data);
@@ -67,11 +70,11 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
     }
   };
 
-  console.log(`Key: ${process.env.GEMINI_API_KEY}`);
   timer.start();
   console.log(timer.startString());
   for (const key in cdStr) {
-    if (key !== "星體") continue;
+    if (!AllowedSections.includes(key as (typeof AllowedSections)[number]))
+      continue;
 
     results.push(key);
 
@@ -100,13 +103,15 @@ export const fnAnalyse = async (data: ChartData): Promise<string> => {
     }
   }
 
-  tempResult = await fnLLMProvider({
-    type: "總結",
-    message: "請分析:" + results.join("\n\n"),
-    showResponse: process.env.LLM_CONSOLE_RESULT === "1",
-  });
+  if (AllowedSections.includes("總結")) {
+    tempResult = await fnLLMProvider({
+      type: "總結",
+      message: "請分析:" + results.join("\n\n"),
+      showResponse: process.env.LLM_CONSOLE_RESULT === "1",
+    });
 
-  await fnPushResult(tempResult, "總結", true);
+    await fnPushResult(tempResult, "總結", true);
+  }
 
   results.unshift(
     fnInputToString(data.input),

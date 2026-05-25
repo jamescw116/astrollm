@@ -8,10 +8,11 @@ import Button from "../Input/Inputs/Button";
 
 interface AIProps {
   chartData: ChartData;
+  aiResp?: string | undefined;
+  setAiResp: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const AI = ({ chartData }: AIProps) => {
-  const [aiResp, setAiResp] = useState<string>();
+const AI = ({ chartData, aiResp, setAiResp }: AIProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const fnSubmit = async () => {
