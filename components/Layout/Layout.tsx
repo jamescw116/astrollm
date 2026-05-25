@@ -33,7 +33,7 @@ const Layout = () => {
   return (
     <div
       className={`
-      flex flex-col h-screen w-screen overflow-hidden
+      flex flex-col h-dvh w-screen overflow-hidden
       md:flex-row
       `}
     >
