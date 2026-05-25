@@ -7,9 +7,10 @@ import type { ChartData } from "@/lib/types/chartData";
 import { ChartConfig } from "@/lib/types/chartSetting";
 
 import { fnGetPanBoundsInUnits } from "@/lib/chart/fnGetPanBoundsUnUnits";
+import { fnGetEventCoords } from "@/lib/chart/fnGetEventCoords";
+import usePointerGestures from "@/lib/hooks/usePointerGestures";
 
 import AstroChartCore from "./AstroChartCore";
-import { fnGetEventCoords } from "@/lib/chart/fnGetEventCoords";
 
 interface AstroChartProps {
   data: ChartData;
@@ -28,12 +29,8 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     [],
   );
 
-  // 滾輪縮放
-  const fnZoomByWheel = useCallback(
-    (e: globalThis.WheelEvent) => {
-      if (e.ctrlKey || e.metaKey) return; // 避免與瀏覽器縮放衝突
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+  const fnZoomCore = useCallback(
+    (delta: number) => {
       setScale((prev) => {
         let next = prev + delta;
         if (next < ChartConfig.scale.min) next = ChartConfig.scale.min;
@@ -48,6 +45,16 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
       });
     },
     [clamp, svgRef],
+  );
+
+  // 滾輪縮放
+  const fnZoomByWheel = useCallback(
+    (e: globalThis.WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) return; // 避免與瀏覽器縮放衝突
+      e.preventDefault();
+      fnZoomCore(e.deltaY > 0 ? -0.1 : 0.1);
+    },
+    [fnZoomCore],
   );
 
   const fnMoveStart = useCallback(
@@ -66,6 +73,19 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
     [],
   );
 
+  const fnMovingCore = useCallback(
+    (dx: number, dy: number) => {
+      const bounds = fnGetPanBoundsInUnits(svgRef, scale);
+      const dxUnits = dx * bounds.unitsPerPx;
+      const dyUnits = dy * bounds.unitsPerPx;
+      setPan((prev) => ({
+        x: clamp(prev.x + dxUnits, bounds.minX, bounds.maxX),
+        y: clamp(prev.y + dyUnits, bounds.minY, bounds.maxY),
+      }));
+    },
+    [clamp, scale, svgRef],
+  );
+
   const fnMoving = useCallback(
     (e: globalThis.MouseEvent | globalThis.TouchEvent) => {
       if (!isDragging || !dragStartRef.current) return;
@@ -75,25 +95,21 @@ const AstroChart: React.FC<AstroChartProps> = ({ data }) => {
       }
 
       const { x, y } = fnGetEventCoords(e);
-      const dx = x - dragStartRef.current.x;
-      const dy = y - dragStartRef.current.y;
-      const bounds = fnGetPanBoundsInUnits(svgRef, scale);
-      const dxUnits = dx * bounds.unitsPerPx;
-      const dyUnits = dy * bounds.unitsPerPx;
-
-      setPan((prev) => ({
-        x: clamp(prev.x + dxUnits, bounds.minX, bounds.maxX),
-        y: clamp(prev.y + dyUnits, bounds.minY, bounds.maxY),
-      }));
+      fnMovingCore(x - dragStartRef.current.x, y - dragStartRef.current.y);
       dragStartRef.current = { x, y };
     },
-    [clamp, scale, isDragging, svgRef],
+    [isDragging, fnMovingCore],
   );
 
   const fnMoveEnd = useCallback(() => {
     setIsDragging(false);
     dragStartRef.current = null;
   }, []);
+
+  usePointerGestures(svgRef, {
+    onDrag: fnMovingCore,
+    onZoom: fnZoomCore,
+  });
 
   useEffect(() => {
     const svg = svgRef.current;

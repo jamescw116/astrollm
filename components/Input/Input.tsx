@@ -33,7 +33,14 @@ export interface InputPropsEx {
   label?: string;
 }
 
-const Input = ({ input, className, setInput, setData, setLoading, setMode }: LayoutInputProps) => {
+const Input = ({
+  input,
+  className,
+  setInput,
+  setData,
+  setLoading,
+  setMode,
+}: LayoutInputProps) => {
   const { theme, fnChangeTheme } = useTheme();
 
   const [dateStr, setDateStr] = useState<string>(
@@ -77,6 +84,7 @@ const Input = ({ input, className, setInput, setData, setLoading, setMode }: Lay
     });
 
   const fnSubmit = async () => {
+    setMode("星圖");
     setData(undefined);
     setLoading(true);
     const apiResp = await fnFetchAPI(input);
@@ -84,15 +92,16 @@ const Input = ({ input, className, setInput, setData, setLoading, setMode }: Lay
     console.log("chartData", chartData);
     setData(chartData);
     setLoading(false);
-    setMode("星圖");
   };
 
   return (
-    <aside className={`flex flex-col gap-2 overflow-x-hidden p-2 border-gray-300
-      w-full h-full overflow-y-auto
+    <aside
+      className={`flex flex-col gap-2 overflow-x-hidden p-2 border-gray-300
+      w-full overflow-y-auto
       md:w-1/5 md:min-w-37.5 md:max-w-[50%] md:resize-x md:border-b-0 md:border-r
       ${className}
-    `}>
+    `}
+    >
       <Text
         type="date"
         onChange={(e) => setDateStr(e.target.value)}
@@ -128,9 +137,13 @@ const Input = ({ input, className, setInput, setData, setLoading, setMode }: Lay
         ))}
       </Select>
       <div className="mt-5">&nbsp;</div>
-      <div className="flex flex-1 flex-row md:flex-col justify-center items-center gap-2">
-      <Button className="flex w-full" onClick={fnSubmit}>送出</Button>
-      <Button className="flex w-full" onClick={fnChangeTheme}>切換主題 (目前: {theme})</Button>
+      <div className="flex flex-1 flex-row md:flex-col items-center gap-2">
+        <Button className="w-full" onClick={fnSubmit}>
+          送出
+        </Button>
+        <Button className="w-full" onClick={fnChangeTheme}>
+          切換主題 (目前: {theme})
+        </Button>
       </div>
     </aside>
   );
