@@ -1,5 +1,6 @@
 export const LngLatLocations = [
   "香港",
+  "本拿比",
   "溫哥華",
   "台北",
   "紐約",
@@ -25,6 +26,7 @@ export type LngLatLists = Record<LngLatLocationName, LngLat>;
 
 export const LngLatList: LngLatLists = {
   香港: { lngD: 114, lngM: 10, latD: 22, latM: 18, tz: 8 },
+  本拿比: { lngD: -122, lngM: 57, latD: 49, latM: 15, tz: -7 },
   溫哥華: { lngD: -123, lngM: 6, latD: 49, latM: 16, tz: -7 },
   台北: { lngD: 121, lngM: 31, latD: 25, latM: 2, tz: 8 },
   紐約: { lngD: -74, lngM: 0, latD: 40, latM: 42, tz: -5 },
