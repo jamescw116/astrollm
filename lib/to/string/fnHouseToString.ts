@@ -13,4 +13,4 @@ export const fnHouseToString = (params: HouseToStringParams): string =>
   (params.showAxis
     ? HouseAxisNames[params.idx][params.lang ?? "en"]
     : HouseNames[params.idx][params.lang ?? "en"]) +
-  (params.eqHouse ? " (等宮)" : "");
+  (params.eqHouse ? " [等宮]" : "");

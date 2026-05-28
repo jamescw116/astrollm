@@ -40,7 +40,9 @@ const fnChartDataToStringAspect = (
   lang: Lang
 ): string[] => ([
   fnToLabel(aspect.fromName as PlanetName, lang, true),
-  fnToLabel(aspect.toName as PlanetName, lang, true),
+  typeof aspect.toName === "string"
+    ? fnToLabel(aspect.toName as PlanetName | ZodiacName | AspectName, lang, true)
+    : fnHouseToString({ idx: aspect.toName, eqHouse: aspect.toType === "eqHouse", lang }),
   fnToLabel(aspect.aspect as AspectName, lang, true),
   "差距: " + fnDegToString({ deg: aspect.degreeDiff, format: "string", lang }),
   "容許度: " + `${aspect.orb}°`,
@@ -79,10 +81,10 @@ export const fnChartDataToStrings = (
   lang: Lang = "zh",
 ): ChartDataString => ({
   星體: Object.entries(chartData.planets).map(([name, planet]) =>
-    fnChartDataToStringPlanet(name as PlanetName, planet, lang).join(""),
+    fnChartDataToStringPlanet(name as PlanetName, planet, lang).join("，"),
   ),
   互融: chartData.mutualReceptions.map((mr) =>
-    fnChartDataToStringMutualReception(mr, lang).join(""),
+    fnChartDataToStringMutualReception(mr, lang).join("，"),
   ),
   相位: chartData.aspects
     .filter(
@@ -93,10 +95,10 @@ export const fnChartDataToStrings = (
         ["main", "zodiac", "axis", "house", "eqHouse"].includes(aspect.toType),
     )
     .map((aspect) =>
-      fnChartDataToStringAspect(aspect, lang).join(""),
+      fnChartDataToStringAspect(aspect, lang).join("，"),
     ),
   宮位: chartData.houses.map((house, index) =>
-    fnChartDataToStringHouse(house, index, lang).join(""),
+    fnChartDataToStringHouse(house, index, lang).join("，"),
   ),
 })
 
