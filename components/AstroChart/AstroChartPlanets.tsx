@@ -49,7 +49,7 @@ const AstroChartPlanet = ({
         <title>
           {fnZodiacDMSToString({
             zodiacDMS: planet.zodiacDMS,
-            zodiac: "symbol",
+            format: "symbol",
           })}
         </title>
         {PlanetConfigs[planetName]?.symbol || "?"}

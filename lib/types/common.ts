@@ -11,7 +11,7 @@ export type Line = {
 export const LangLists = ["zh", "en"] as const;
 export type Lang = (typeof LangLists)[number];
 
-export type Label = Record<Lang, string>;
+export type Label<T = string | string[]> = { [k in Lang]?: T };
 
 export const ColorSchemeList = ["light", "dark"] as const;
 export type ColorScheme = (typeof ColorSchemeList)[number];

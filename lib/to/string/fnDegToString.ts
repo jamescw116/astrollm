@@ -7,13 +7,15 @@ import { fnZodiacDMSToString } from "./fnZodiacDMSToString";
 export type DegToStringParams = {
   deg: number;
   motion?: number;
-  zodiac?: ZodiacLabelFormat;
+  format?: ZodiacLabelFormat;
   lang?: Lang;
+  desc?: boolean;
 };
 
 export const fnDegToString = (params: DegToStringParams): string =>
   fnZodiacDMSToString({
     zodiacDMS: fnDegToZodiacDMS(params.deg, params.motion),
-    zodiac: params.zodiac,
+    format: params.format,
     lang: params.lang,
+    desc: params.desc,
   });

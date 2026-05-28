@@ -35,7 +35,8 @@ export type AstroPointName = (typeof AstroPointList)[number];
 export type PlanetConfigType = "main" | "sub";
 
 export type PlanetConfig = {
-  label: Label;
+  label: Label<string>;
+  desc: Label<string[]>;
   type: PlanetConfigType;
   symbol: string;
   color: string;
@@ -49,6 +50,7 @@ export type PlanetConfigs = Record<PlanetName, PlanetConfig>;
 export const PlanetConfigs: PlanetConfigs = {
   sun: {
     label: { zh: "日", en: "Sun" },
+    desc: { zh: ["個性", "目標", "自我", "父親", "領導"] },
     type: "main",
     symbol: "\u2609", // ☉
     color: ChartConfig.colorName.red,
@@ -59,6 +61,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   moon: {
     label: { zh: "月", en: "Moon" },
+    desc: { zh: ["內在", "情緒", "感性", "母親", "記憶", "不安"] },
     type: "main",
     symbol: "\u263D", // ☽
     color: ChartConfig.colorName.blue,
@@ -69,6 +72,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   mercury: {
     label: { zh: "水", en: "Mercury" },
+    desc: { zh: ["理解", "溝通", "理性", "商業", "學習", "快速"] },
     type: "main",
     symbol: "\u263F", // ☿
     color: ChartConfig.colorName.green,
@@ -79,6 +83,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   venus: {
     label: { zh: "金", en: "Venus" },
+    desc: { zh: ["審美", "和諧", "交際", "人緣", "愛情"] },
     type: "main",
     symbol: "\u2640", // ♀
     color: ChartConfig.colorName.green,
@@ -89,6 +94,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   mars: {
     label: { zh: "火", en: "Mars" },
+    desc: { zh: ["慾望", "企圖", "行動", "競爭", "衝突"] },
     type: "main",
     symbol: "\u2642", // ♂
     color: ChartConfig.colorName.red,
@@ -99,6 +105,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   jupiter: {
     label: { zh: "木", en: "Jupiter" },
+    desc: { zh: ["擴張", "機會", "樂觀", "學術", "希望"] },
     type: "main",
     symbol: "\u2643", // ♃
     color: ChartConfig.colorName.red,
@@ -109,6 +116,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   saturn: {
     label: { zh: "土", en: "Saturn" },
+    desc: { zh: ["壓抑", "規範", "冷漠", "組織", "責任", "緩慢"] },
     type: "main",
     symbol: "\u2644", // ♄
     color: ChartConfig.colorName.yellow,
@@ -119,6 +127,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   uranus: {
     label: { zh: "天", en: "Uranus" },
+    desc: { zh: ["變革", "意外", "創新", "科技", "顛覆"] },
     type: "sub",
     symbol: "\u2645", // ♅
     color: ChartConfig.colorName.green,
@@ -126,6 +135,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   neptune: {
     label: { zh: "海", en: "Neptune" },
+    desc: { zh: ["幻想", "模糊", "靈感", "藝術", "迷幻"] },
     type: "sub",
     symbol: "\u2646", // ♆
     color: ChartConfig.colorName.blue,
@@ -133,6 +143,7 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   pluto: {
     label: { zh: "冥", en: "Pluto" },
+    desc: { zh: ["威脅", "極端", "摧毀", "死亡", "重生"] },
     type: "sub",
     symbol: "\u2647", // ♇
     color: ChartConfig.colorName.blue,

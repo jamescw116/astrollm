@@ -4,7 +4,7 @@ import type { ChartData, ChartDataString } from "@/lib/types/chartData";
 
 import { Timer } from "../common/Timer";
 
-import { fnChartDataToString } from "@/lib/to/string/fnChartDataToString";
+import { fnChartDataToStrings } from "@/lib/to/string/fnChartDataToString";
 import { fnInputToString } from "../to/string/fnInputToString";
 import { fnSleep } from "../fnSleep";
 
@@ -26,7 +26,7 @@ const AllowedSections: Array<keyof ChartDataString | "總結"> =
   process.env.LLM_ALLOW_SECTIONS?.split(",") as Array<keyof ChartDataString | "總結">;
 
 export const fnAnalyse = async (data: ChartData): Promise<string> => {
-  const cdStr = fnChartDataToString(data);
+  const cdStr = fnChartDataToStrings(data);
   const results: string[] = [];
   let tempResult: string | undefined;
   const timer = new Timer();

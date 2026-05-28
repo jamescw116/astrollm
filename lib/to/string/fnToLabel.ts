@@ -8,30 +8,40 @@ import { ZodiacConfigs, ZodiacList } from "@/lib/types/zodiac";
 import { AspectConfigs, AspectList } from "@/lib/types/aspect";
 
 import { fnToCapitalize } from "../fnToCapitalize";
+import { fnToDesc } from "./fnToDesc";
 
-const fnToPlanetLabel = (planetName: PlanetName, lang: Lang): string =>
+const fnToLabelPlanet = (planetName: PlanetName, lang: Lang): string =>
   PlanetConfigs[planetName].label[lang] ??
   fnToCapitalize(PlanetConfigs[planetName].label["en"]) ??
-  fnToCapitalize(planetName);
+  fnToCapitalize(planetName) ??
+  planetName;
 
-const fnToZodiacLabel = (zodiacName: ZodiacName, lang: Lang): string =>
+const fnToLabelZodiac = (zodiacName: ZodiacName, lang: Lang): string =>
   ZodiacConfigs[zodiacName].label[lang] ??
   fnToCapitalize(ZodiacConfigs[zodiacName].label["en"]) ??
-  fnToCapitalize(zodiacName);
+  fnToCapitalize(zodiacName) ??
+  zodiacName;
 
-const fnToAspectLabel = (aspectName: AspectName, lang: Lang): string =>
+const fnToLabelAspect = (aspectName: AspectName, lang: Lang): string =>
   AspectConfigs[aspectName].label[lang] ??
   fnToCapitalize(AspectConfigs[aspectName].label["en"]) ??
-  fnToCapitalize(aspectName);
+  fnToCapitalize(aspectName) ??
+  aspectName;
 
-export const fnToLabel = (
+const fnToLabelCore = (
   name: PlanetName | ZodiacName | AspectName,
   lang: Lang,
 ): string =>
   PlanetList.includes(name as PlanetName)
-    ? fnToPlanetLabel(name as PlanetName, lang)
+    ? fnToLabelPlanet(name as PlanetName, lang)
     : ZodiacList.includes(name as ZodiacName)
-      ? fnToZodiacLabel(name as ZodiacName, lang)
+      ? fnToLabelZodiac(name as ZodiacName, lang)
       : AspectList.includes(name as AspectName)
-        ? fnToAspectLabel(name as AspectName, lang)
-        : fnToCapitalize(name);
+        ? fnToLabelAspect(name as AspectName, lang)
+        : fnToCapitalize(name) ?? name;
+
+export const fnToLabel = (
+  name: PlanetName | ZodiacName | AspectName,
+  lang: Lang,
+  desc: boolean = false
+): string => `${fnToLabelCore(name, lang)}${desc ? ` (${fnToDesc(name, lang)})` : ""}`;

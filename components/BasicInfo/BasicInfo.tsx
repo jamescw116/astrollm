@@ -2,7 +2,7 @@
 
 import type { ChartData } from "@/lib/types/chartData";
 
-import { fnChartDataToString } from "@/lib/to/string/fnChartDataToString";
+import { fnChartDataToStrings } from "@/lib/to/string/fnChartDataToString";
 
 interface BasicInfoProps {
   chartData: ChartData;
@@ -11,7 +11,7 @@ interface BasicInfoProps {
 const BasicInfo = ({ chartData }: BasicInfoProps) => {
   return (
     <div className="flex flex-col gap-4 w-full h-full overflow-y-auto">
-      {Object.entries(fnChartDataToString(chartData)).map(([key, value]) => [
+      {Object.entries(fnChartDataToStrings(chartData)).map(([key, value]) => [
         <div key={key} className="font-bold">
           {key}:
         </div>,
