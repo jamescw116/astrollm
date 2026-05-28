@@ -26,7 +26,7 @@ const AllowedSections: Array<keyof ChartDataString | "總結"> =
   process.env.LLM_ALLOW_SECTIONS?.split(",") as Array<keyof ChartDataString | "總結">;
 
 export const fnAnalyse = async (data: ChartData): Promise<string> => {
-  const cdStr = fnChartDataToStrings(data);
+  const cdStr = fnChartDataToStrings(data, "zh", true);
   const results: string[] = [];
   let tempResult: string | undefined;
   const timer = new Timer();

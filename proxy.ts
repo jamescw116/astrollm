@@ -2,7 +2,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export const proxy = async (request: NextRequest) => {
   let response = NextResponse.next({
     request: { headers: request.headers },
   });
@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
   }
 
   return response;
-}
+};
 
 // 設定攔截範圍，排除靜態檔案（圖片、CSS 等）
 export const config = {

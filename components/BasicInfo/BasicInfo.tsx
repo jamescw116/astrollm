@@ -11,7 +11,7 @@ interface BasicInfoProps {
 const BasicInfo = ({ chartData }: BasicInfoProps) => {
   return (
     <div className="flex flex-col gap-4 w-full h-full overflow-y-auto">
-      {Object.entries(fnChartDataToStrings(chartData)).map(([key, value]) => [
+      {Object.entries(fnChartDataToStrings(chartData, "zh", false)).map(([key, value]) => [
         <div key={key} className="font-bold">
           {key}:
         </div>,
