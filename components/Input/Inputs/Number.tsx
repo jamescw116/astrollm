@@ -1,3 +1,5 @@
+"use client";
+
 import Input from "./Text";
 
 const Number = ({

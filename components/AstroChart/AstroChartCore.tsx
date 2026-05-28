@@ -1,3 +1,5 @@
+"use client";
+
 import type { ChartData } from "@/lib/types/chartData";
 import type { XY } from "@/lib/types/common";
 

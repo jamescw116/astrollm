@@ -1,3 +1,5 @@
+"use client";
+
 import type { Line } from "@/lib/types/common";
 import type { ChartDataHouse } from "@/lib/types/chartData";
 

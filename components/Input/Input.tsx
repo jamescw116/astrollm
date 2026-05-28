@@ -1,4 +1,8 @@
+"use client";
+
 import { HTMLAttributes, useState } from "react";
+
+import Link from "next/link";
 
 import type { ChartData, ChartDataInput } from "@/lib/types/chartData";
 import type { LayoutMode } from "../Layout/Layout";
@@ -99,6 +103,10 @@ const Input = ({
     setLoading(false);
   };
 
+  const fnLogin = () => {
+    
+  }
+
   return (
     <aside
       className={`flex flex-col gap-2 overflow-x-hidden p-2 border-gray-300
@@ -161,6 +169,11 @@ const Input = ({
         <Button className="w-full" onClick={fnChangeTheme}>
           切換主題 (目前: {theme})
         </Button>
+        <Link href="/auth" className="w-full">
+        <Button className="w-full">
+          登入
+        </Button>
+        </Link>
       </div>
     </aside>
   );

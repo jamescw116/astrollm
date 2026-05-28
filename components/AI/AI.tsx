@@ -24,7 +24,7 @@ const AI = ({ chartData, aiResp, setAiResp }: AIProps) => {
   };
 
   return !aiResp ? (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col w-full h-full justify-center items-center gap-4">
       <div className="flex justify-center items-center">
         需時約 5 - 10 分鐘，請耐心等待
       </div>
@@ -42,7 +42,7 @@ const AI = ({ chartData, aiResp, setAiResp }: AIProps) => {
       )}
     </div>
   ) : (
-    <div className="overflow-y-auto">
+    <div className="flex flex-col w-full h-full justify-center items-center gap-4">
       {aiResp.split("\n").map((line, index) => (
         <div key={index}>{line}</div>
       ))}

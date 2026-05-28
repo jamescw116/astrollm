@@ -1,3 +1,5 @@
+"use client";
+
 import type { ChartDataAspect, ChartDataPlanets } from "@/lib/types/chartData";
 import type { PlanetName } from "@/lib/types/planet";
 import type { AspectName } from "@/lib/types/aspect";

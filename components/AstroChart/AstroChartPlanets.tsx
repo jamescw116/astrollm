@@ -1,3 +1,5 @@
+"use client";
+
 import type { XY } from "@/lib/types/common";
 import type { PlanetName } from "@/lib/types/planet";
 import type { ChartDataPlanet, ChartDataPlanets } from "@/lib/types/chartData";

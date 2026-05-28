@@ -1,3 +1,5 @@
+"use client";
+
 import type { InputPropsEx } from "../Input";
 
 import { useTheme } from "@/lib/ThemeProvider";

@@ -1,3 +1,5 @@
+"use client";
+
 import type { ChartData } from "@/lib/types/chartData";
 
 import { fnChartDataToString } from "@/lib/to/string/fnChartDataToString";
