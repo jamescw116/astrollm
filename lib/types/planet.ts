@@ -36,7 +36,10 @@ export type PlanetConfigType = "main" | "sub";
 
 export type PlanetConfig = {
   label: Label<string>;
-  desc: Label<string[]>;
+  detail: {
+    core: Label<string[]>;
+    operation: Label<string[]>;
+  };
   type: PlanetConfigType;
   symbol: string;
   color: string;
@@ -50,7 +53,20 @@ export type PlanetConfigs = Record<PlanetName, PlanetConfig>;
 export const PlanetConfigs: PlanetConfigs = {
   sun: {
     label: { zh: "日", en: "Sun" },
-    desc: { zh: ["個性", "目標", "自我", "父親", "領導"] },
+    detail: {
+      core: {
+        zh: [
+          "建立主體性",
+          "定義方向與目標",
+          "維持主導權",
+          "集中資源",
+          "穩定核心意志",
+        ],
+      },
+      operation: {
+        zh: ["傾向主動控制局面", "重視自身存在感", "容易圍繞核心目標運作"],
+      },
+    },
     type: "main",
     symbol: "\u2609", // ☉
     color: ChartConfig.colorName.red,
@@ -61,7 +77,19 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   moon: {
     label: { zh: "月", en: "Moon" },
-    desc: { zh: ["內在", "情緒", "感性", "母親", "記憶", "不安"] },
+    detail: {
+      core: {
+        zh: [
+          "建立安全感",
+          "儲存情緒記憶",
+          "對外界刺激產生情緒反應",
+          "維持熟悉感",
+        ],
+      },
+      operation: {
+        zh: ["優先保護內在穩定", "容易受環境影響", "傾向重複熟悉模式"],
+      },
+    },
     type: "main",
     symbol: "\u263D", // ☽
     color: ChartConfig.colorName.blue,
@@ -72,7 +100,12 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   mercury: {
     label: { zh: "水", en: "Mercury" },
-    desc: { zh: ["理解", "溝通", "理性", "商業", "學習", "快速"] },
+    detail: {
+      core: { zh: ["接收資訊", "分析與理解", "傳遞訊息", "建立邏輯連結"] },
+      operation: {
+        zh: ["快速切換資訊", "重視思考過程", "傾向從多角度分析問題"],
+      },
+    },
     type: "main",
     symbol: "\u263F", // ☿
     color: ChartConfig.colorName.green,
@@ -83,7 +116,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   venus: {
     label: { zh: "金", en: "Venus" },
-    desc: { zh: ["審美", "和諧", "交際", "人緣", "愛情"] },
+    detail: {
+      core: { zh: ["建立關係", "維持和諧", "判斷價值與美感", "降低衝突成本"] },
+      operation: { zh: ["傾向互惠", "重視舒適感", "避免破壞關係"] },
+    },
     type: "main",
     symbol: "\u2640", // ♀
     color: ChartConfig.colorName.green,
@@ -94,7 +130,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   mars: {
     label: { zh: "火", en: "Mars" },
-    desc: { zh: ["慾望", "企圖", "行動", "競爭", "衝突"] },
+    detail: {
+      core: { zh: ["推進行動", "爭奪主導權", "排除阻力", "直接滿足慾望"] },
+      operation: { zh: ["反應速度快", "優先行動", "衝突傾向直接爆發"] },
+    },
     type: "main",
     symbol: "\u2642", // ♂
     color: ChartConfig.colorName.red,
@@ -105,7 +144,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   jupiter: {
     label: { zh: "木", en: "Jupiter" },
-    desc: { zh: ["擴張", "機會", "樂觀", "學術", "希望"] },
+    detail: {
+      core: { zh: ["擴大可能性", "建立信念", "延伸視野", "放大既有方向"] },
+      operation: { zh: ["傾向樂觀放大", "容易忽略限制", "喜歡建立長遠願景"] },
+    },
     type: "main",
     symbol: "\u2643", // ♃
     color: ChartConfig.colorName.red,
@@ -116,7 +158,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   saturn: {
     label: { zh: "土", en: "Saturn" },
-    desc: { zh: ["壓抑", "規範", "冷漠", "組織", "責任", "緩慢"] },
+    detail: {
+      core: { zh: ["建立秩序", "壓縮風險", "延遲滿足", "維持長期穩定"] },
+      operation: { zh: ["行動保守", "重視責任", "需要驗證後才推進"] },
+    },
     type: "main",
     symbol: "\u2644", // ♄
     color: ChartConfig.colorName.yellow,
@@ -127,7 +172,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   uranus: {
     label: { zh: "天", en: "Uranus" },
-    desc: { zh: ["變革", "意外", "創新", "科技", "顛覆"] },
+    detail: {
+      core: { zh: ["打破既有結構", "製造突變", "推動新模式", "強制脫離慣性"] },
+      operation: { zh: ["反傳統", "不穩定", "容易突然轉向"] },
+    },
     type: "sub",
     symbol: "\u2645", // ♅
     color: ChartConfig.colorName.green,
@@ -135,7 +183,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   neptune: {
     label: { zh: "海", en: "Neptune" },
-    desc: { zh: ["幻想", "模糊", "靈感", "藝術", "迷幻"] },
+    detail: {
+      core: { zh: ["模糊界線", "放大感受", "建立幻想投射", "削弱現實邊界"] },
+      operation: { zh: ["難以明確定義", "容易理想化", "傾向逃避現實限制"] },
+    },
     type: "sub",
     symbol: "\u2646", // ♆
     color: ChartConfig.colorName.blue,
@@ -143,7 +194,10 @@ export const PlanetConfigs: PlanetConfigs = {
   },
   pluto: {
     label: { zh: "冥", en: "Pluto" },
-    desc: { zh: ["威脅", "極端", "摧毀", "死亡", "重生"] },
+    detail: {
+      core: { zh: ["極端集中", "摧毀舊結構", "強制重組", "控制生存權"] },
+      operation: { zh: ["具有壓迫性", "容易走向極端", "會長期滲透與改造"] },
+    },
     type: "sub",
     symbol: "\u2647", // ♇
     color: ChartConfig.colorName.blue,

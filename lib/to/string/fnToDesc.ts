@@ -10,18 +10,23 @@ import { AspectConfigs, AspectList } from "@/lib/types/aspect";
 import { fnToCapitalize } from "../fnToCapitalize";
 
 const fnToDescPlanet = (planetName: PlanetName, lang: Lang): string =>
-  PlanetConfigs[planetName].desc[lang]?.join(", ") ??
-  fnToCapitalize(PlanetConfigs[planetName].desc["en"]?.join(", ")) ??
-  "";
+  [
+    ...(PlanetConfigs[planetName].detail.core[lang] ??
+      PlanetConfigs[planetName].detail.core["en"] ??
+      []),
+    ...(PlanetConfigs[planetName].detail.operation[lang] ??
+      PlanetConfigs[planetName].detail.core["en"] ??
+      []),
+  ].join(", ");
 
 const fnToDescZodiac = (zodiacName: ZodiacName, lang: Lang): string =>
-  ZodiacConfigs[zodiacName].desc[lang]?.join(", ") ??
-  fnToCapitalize(ZodiacConfigs[zodiacName].desc["en"]?.join(", ")) ??
+  ZodiacConfigs[zodiacName].deco[lang]?.join(", ") ??
+  fnToCapitalize(ZodiacConfigs[zodiacName].deco["en"]?.join(", ")) ??
   "";
 
 const fnToDescAspect = (aspectName: AspectName, lang: Lang): string =>
-  AspectConfigs[aspectName].desc[lang]?.join(", ") ??
-  fnToCapitalize(AspectConfigs[aspectName].desc["en"]?.join(", ")) ??
+  AspectConfigs[aspectName].interaction[lang]?.join(", ") ??
+  fnToCapitalize(AspectConfigs[aspectName].interaction["en"]?.join(", ")) ??
   "";
 
 export const fnToDesc = (
@@ -34,4 +39,4 @@ export const fnToDesc = (
       ? fnToDescZodiac(name as ZodiacName, lang)
       : AspectList.includes(name as AspectName)
         ? fnToDescAspect(name as AspectName, lang)
-        : fnToCapitalize(name) ?? "";
+        : (fnToCapitalize(name) ?? "");

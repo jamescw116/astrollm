@@ -44,7 +44,7 @@ export const SunCondition: SunConditionType = {
 export type AspectType = "main" | "sub";
 export type AspectConfig = {
   label: Label<string>;
-  desc: Label<string[]>;
+  interaction: Label<string[]>;
   type: AspectType;
   symbol: string;
   degree: number; // 相位角度，單位為度
@@ -57,7 +57,14 @@ export type AspectConfigs = Record<AspectName, AspectConfig>;
 export const AspectConfigs: AspectConfigs = {
   conjunction: {
     label: { zh: "合相", en: "Conjunction" },
-    desc: { zh: ["溶合"] },
+    interaction: {
+      zh: [
+        "功能直接融合",
+        "難以分離運作",
+        "其中一方會放大另一方",
+        "容易形成單一核心行為",
+      ],
+    },
     type: "main",
     symbol: "\u260C", // ☌
     degree: 0,
@@ -83,7 +90,14 @@ export const AspectConfigs: AspectConfigs = {
   },
   opposition: {
     label: { zh: "對分相", en: "Opposition" },
-    desc: { zh: ["對立"] },
+    interaction: {
+      zh: [
+        "雙方互相拉扯",
+        "容易投射到外部",
+        "需要建立平衡",
+        "難同時滿足兩端需求",
+      ],
+    },
     type: "main",
     symbol: "\u260D", // ☍
     degree: 180,
@@ -93,7 +107,9 @@ export const AspectConfigs: AspectConfigs = {
   },
   trine: {
     label: { zh: "三分相", en: "Trine" },
-    desc: { zh: ["和諧"] },
+    interaction: {
+      zh: ["雙方運作流暢", "容易自然配合", "缺乏外部壓力修正", "容易變成慣性"],
+    },
     type: "main",
     symbol: "\u25B3", // △
     degree: 120,
@@ -103,7 +119,9 @@ export const AspectConfigs: AspectConfigs = {
   },
   square: {
     label: { zh: "四分相", en: "Square" },
-    desc: { zh: ["衝突"] },
+    interaction: {
+      zh: ["雙方運作邏輯衝突", "會互相干擾", "需要強制調整", "容易產生內耗"],
+    },
     type: "main",
     symbol: "\u25A1", // □
     degree: 90,
@@ -113,7 +131,9 @@ export const AspectConfigs: AspectConfigs = {
   },
   sextile: {
     label: { zh: "六分相", en: "Sextile" },
-    desc: { zh: ["協調"] },
+    interaction: {
+      zh: ["雙方存在合作空間", "需要主動啟動", "可以形成輔助", "不會強制發生"],
+    },
     type: "main",
     symbol: "\u26B9", // ⚹
     degree: 60,
@@ -124,7 +144,7 @@ export const AspectConfigs: AspectConfigs = {
 
   semisextile: {
     label: { zh: "半六分相", en: "Semisextile" },
-    desc: { zh: ["微調"] },
+    interaction: { zh: ["微調"] },
     type: "sub",
     symbol: "\u26BA", // ⚺
     degree: 30,
@@ -135,7 +155,7 @@ export const AspectConfigs: AspectConfigs = {
 
   quincunx: {
     label: { zh: "梅花相", en: "Quincunx" },
-    desc: { zh: ["調整"] },
+    interaction: { zh: ["調整"] },
     type: "sub",
     symbol: "\u26BB", // ⚻
     degree: 150,
